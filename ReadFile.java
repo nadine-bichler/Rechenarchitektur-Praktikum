@@ -8,7 +8,7 @@ public class ReadFile {
 
     public static void main(String[] args){
 
-        ArrayList<Integer> ROM = new ArrayList<Integer>();
+        ArrayList<String> ROM = new ArrayList<String>();
 
         try {
 
@@ -21,8 +21,9 @@ public class ReadFile {
                     continue;
                 }
                 System.out.println(line);
-                String hex = line.substring(5,9);
-                ROM.add(Integer.parseInt(hex, 16));
+                //String hex = line.substring(5,9);
+                //ROM.add(Integer.parseInt(hex, 16));
+                ROM.add(line.substring(5,9));
             }
 
             bufferedReader.close();
@@ -31,7 +32,7 @@ public class ReadFile {
             e.printStackTrace();
             }
         
-        Iterator<Integer> iter = ROM.iterator();
+        Iterator<String> iter = ROM.iterator();
         while (iter.hasNext()){
             System.out.print(iter.next() + " ");
         }
