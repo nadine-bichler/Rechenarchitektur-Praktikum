@@ -23,6 +23,7 @@ public class Decoder{
                 System.out.print("addlw ");
                 break;
         }
+
         return command;
     }
 
