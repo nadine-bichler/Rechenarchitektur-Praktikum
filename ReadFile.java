@@ -21,8 +21,6 @@ public class ReadFile {
                     continue;
                 }
                 System.out.println(line);
-                //String hex = line.substring(5,9);
-                //ROM.add(Integer.parseInt(hex, 16));
                 ROM.add(line.substring(5,9));
             }
 
@@ -34,8 +32,45 @@ public class ReadFile {
         
         Iterator<String> iter = ROM.iterator();
         while (iter.hasNext()){
-            System.out.print(iter.next() + " ");
+            String command = iter.next();
+            System.out.print(command + " ");
+            System.out.println(operator(command) + " " + adress(command));
         }
+    }
+
+    public static int operator (String x){
+        String hex = x.substring(0,2);
+        int command = Integer.parseInt(hex, 16);
+        switch (command){
+            case 48:
+                System.out.print("movlw ");
+                break;
+            case 57:
+                System.out.print("andlw ");
+                break;
+            case 56:
+                System.out.print("iorlw ");
+                break;
+            case 60:
+                System.out.print("sublw ");
+                break;
+            case 58:
+                System.out.print("xorlw ");
+                break;
+            case 62:
+                System.out.print("addlw ");
+                break;
+            case 40:
+                System.out.print("goto ");
+                break;
+        }
+        return command;
+    }
+
+    public static int adress (String x){
+        String hex = x.substring(2,4);
+        int adress = Integer.parseInt(hex, 16);
+        return adress;
     }
 }
 
