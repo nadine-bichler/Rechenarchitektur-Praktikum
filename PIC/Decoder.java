@@ -13,8 +13,8 @@ public class Decoder{
 
         //Bitargument
         int argument = bcode & 0xFF;
-        int adress = bcode & 0x7F;
-        int destinationBit = bcode & 0x80;
+        int fadress = bcode & 0x7F;
+        int dBit = bcode & 0x80;
     
         switch (operation){
             //Literal operations
