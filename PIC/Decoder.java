@@ -1,11 +1,18 @@
 package PIC;
 public class Decoder{
     public void operator (int bcode){
+
+        //Bitoperation
         int operation = bcode >> 12;
+
+        //Bitbefehl
         int command = bcode >> 8;
+
+        //Bitargument
         int argument = bcode & 0xFF;
     
         switch (operation){
+            //Literal operations
             case 0b11:
                 switch (command){
                     case 0b111110:
