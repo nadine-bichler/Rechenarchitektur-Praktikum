@@ -19,7 +19,7 @@ public class ReadFile {
 
         try {
 
-            FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim1.LST");
+            FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim1.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String line = "";
