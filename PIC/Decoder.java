@@ -64,52 +64,52 @@ public class Decoder{
 
                 switch (bcode >> 8){
                     case 0b000111:
-                        ADDWF(argument);
+                        ADDWF(dBit, fAdr);
                         break;
                     case 0b000101:
-                        ANDWF(argument);
+                        ANDWF(dBit, fAdr);
                         break;
                     case 0b000001:
                         //CRLF oder CRLW
                         break;
                     case 0b001001:
-                        COMF(argument);
+                        COMF(dBit, fAdr);
                         break;
                     case 0b000011:
-                        DECF(argument);
+                        DECF(dBit, fAdr);
                         break;
                     case 0b001011:
-                        DECFSZ(argument);
+                        DECFSZ(dBit, fAdr);
                         break;
                     case 0b001010:
-                        INCF(argument);
+                        INCF(dBit, fAdr);
                         break;
                     case 0b001111:
-                        INCFSZ(argument);
+                        INCFSZ(dBit, fAdr);
                         break;
                     case 0b000100:
-                        IORWF(argument);
+                        IORWF(dBit, fAdr);
                         break;
                     case 0b001000:
-                        MOVF(argument);
+                        MOVF(dBit, fAdr);
                         break;
                     case 0b000000:
                         //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         break;
                     case 0b001101:
-                        RLF(argument);
+                        RLF(dBit, fAdr);
                         break;
                     case 0b001100:
-                        RRF(argument);
+                        RRF(dBit, fAdr);
                         break;
                     case 0b000010:
-                        SUBWF(argument);
+                        SUBWF(dBit, fAdr);
                         break;
                     case 0b001110:
-                        SWAPF(argument);
+                        SWAPF(dBit, fAdr);
                         break;
                     case 0b000110:
-                        XORWF(argument);
+                        XORWF(dBit, fAdr);
                         break;
                 }
             //Control operations
@@ -185,7 +185,47 @@ public class Decoder{
     }
 
 //case 0b00:
-    public void ADDWF(int argument) {
+    public void ADDWF(int dBit, int fAdr) {
+        
+    }
+
+    public void ANDWF(int dBit, int fAdr) {
+       
+    }
+    public void COMF(int dBit, int fAdr) {
+       
+    }
+    public void DECF(int dBit, int fAdr) {
+       
+    }
+    public void DECFSZ(int dBit, int fAdr) {
+       
+    }
+    public void INCF(int dBit, int fAdr) {
+       
+    }
+    public void INCFSZ(int dBit, int fAdr) {
+       
+    }
+    public void IORWF(int dBit, int fAdr) {
+       
+    }
+    public void MOVF(int dBit, int fAdr) {
+       
+    }
+    public void RLF(int dBit, int fAdr) {
+       
+    }
+    public void RRF(int dBit, int fAdr) {
+       
+    }
+    public void SUBWF(int dBit, int fAdr) {
+       
+    }
+    public void SWAPF(int dBit, int fAdr) {
+       
+    }
+    public void XORWF(int dBit, int fAdr) {
        
     }
 }
