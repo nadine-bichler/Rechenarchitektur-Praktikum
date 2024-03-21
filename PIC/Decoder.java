@@ -1,7 +1,10 @@
 package PIC;
 public class Decoder{
-    public void operator (int bcode){
 
+    //Working Register
+    int W = 0;;
+
+    public void operator (int bcode){
         //Bitoperation
         int operation = bcode >> 12;
 
@@ -38,6 +41,7 @@ public class Decoder{
                         break;
                 }
             case 0b01:
+            //Byte-oriented operations
             case 0b00:
             case 0b10:
 
@@ -45,30 +49,31 @@ public class Decoder{
     }
 
     public void ADDLW(int argument) {
-       
-    }
-
-    public void MOVLW(int argument){
-        
+       W += argument;
     }
 
     public void ANDLW(int argument){
-        
+        W &= argument;
     }
 
     public void IORLW(int argument){
-        
+        W |= argument;
     }
 
+    public void MOVLW(int argument){
+        W = argument;
+    }
+
+    //später
     public void RETLW(int argument){
         
     }
 
     public void SUBLW(int argument){
-        
+        W -= argument;
     }
 
     public void XORLW(int argument){
-        
+        W ^= argument;
     }
 }
