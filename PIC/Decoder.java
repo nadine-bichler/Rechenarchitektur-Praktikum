@@ -129,7 +129,7 @@ public class Decoder{
 //case 0b11:
     //Literal operations
     public void ADDLW(int k) {
-       W += k;
+        W += k;
     }
 
     public void ANDLW(int k){
@@ -151,6 +151,9 @@ public class Decoder{
 
     public void SUBLW(int k){
         W -= k;
+        if (W < 0){
+            W *= (-1);
+        }
     }
 
     public void XORLW(int k){
