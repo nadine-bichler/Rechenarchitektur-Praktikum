@@ -1,6 +1,6 @@
 package PIC;
 public class Decoder{
-    public int operator (String x){
+    public int operator (int x){
         String hex = x.substring(0,2);
         int command = Integer.parseInt(hex, 16);
         switch (command){
@@ -27,7 +27,7 @@ public class Decoder{
         return command;
     }
 
-    public int adress (String x){
+    public int adress (int x){
         String hex = x.substring(2,4);
         int adress = Integer.parseInt(hex, 16);
         return adress;

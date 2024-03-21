@@ -9,9 +9,13 @@ public class ReadFile {
 
     public static void main(String[] args){
 
+        int ROM [] = new int[512];
+
+        int wRegister;
+
         Decoder decoder = new Decoder();
 
-        ArrayList<String> ROM = new ArrayList<String>();
+        int x = 0;
 
         try {
 
@@ -24,7 +28,8 @@ public class ReadFile {
                     continue;
                 }
                 System.out.println(line);
-                ROM.add(line.substring(5,9));
+                ROM [x] = Integer.parseInt(line.substring(5,9), 16);
+                x++;
             }
 
             bufferedReader.close();
@@ -33,11 +38,8 @@ public class ReadFile {
             e.printStackTrace();
             }
         
-        Iterator<String> iter = ROM.iterator();
-        while (iter.hasNext()){
-            String command = iter.next();
-            System.out.print(command + " ");
-            System.out.println(decoder.operator(command) + " " + decoder.adress(command));
+        for (int i = 0; i < x; i++){
+            System.out.println(ROM[i]);
         }
     }
 }
