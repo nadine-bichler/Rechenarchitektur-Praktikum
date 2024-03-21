@@ -9,9 +9,11 @@ public class ReadFile {
 
     public static void main(String[] args){
 
-        int ROM [] = new int[512];
+        //Programmspeicher (Programmzähler = Index)
+        int ROM [] = new int[1024];
 
-        int wRegister;
+        //Working Register
+        int W = 0;;
 
         Decoder decoder = new Decoder();
 
@@ -22,6 +24,7 @@ public class ReadFile {
             FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim1.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+            //
             String line = "";
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.startsWith(" ")){
@@ -38,6 +41,7 @@ public class ReadFile {
             e.printStackTrace();
             }
         
+        //Test ob richtig in Array gespeichert
         for (int i = 0; i < x; i++){
             System.out.println(ROM[i]);
         }
