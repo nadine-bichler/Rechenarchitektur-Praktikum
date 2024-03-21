@@ -5,6 +5,8 @@ public class Decoder{
     int W = 0;
 
     public void execute (int bcode){
+
+        int fAdr = bcode & 0x7F;
     
         switch (bcode >> 12){
             //Literal operations
@@ -38,27 +40,27 @@ public class Decoder{
             //Bit-oriented Operations
             case 0b01:
 
-            int argument = bcode & 0x3FF;
+            int bit = (bcode & 0x3FF) >> 7;
+            
 
                 switch(bcode >> 10){
                     case 0b0100:
-                        BCF(argument);
+                        BCF(bit, fAdr);
                         break;
                     case 0b0101:
-                        BSF(argument);
+                        BSF(bit, fAdr);
                         break;
                     case 0b0110:
-                        BTFSC(argument);
+                        BTFSC(bit, fAdr);
                         break;
                     case 0b0111:
-                        BTFSS(argument);
+                        BTFSS(bit, fAdr);
                         break;
                 }
             //Byte-oriented operations
             case 0b00:
 
             int dBit = bcode & 0x80;
-            int fAdr = bcode & 0x7F;
 
                 switch (bcode >> 8){
                     case 0b000111:
@@ -126,50 +128,50 @@ public class Decoder{
 
 //case 0b11:
     //Literal operations
-    public void ADDLW(int argument) {
-       W += argument;
+    public void ADDLW(int k) {
+       W += k;
     }
 
-    public void ANDLW(int argument){
-        W &= argument;
+    public void ANDLW(int k){
+        W &= k;
     }
 
-    public void IORLW(int argument){
-        W |= argument;
+    public void IORLW(int k){
+        W |= k;
     }
 
-    public void MOVLW(int argument){
-        W = argument;
+    public void MOVLW(int k){
+        W = k;
     }
 
     //später
-    public void RETLW(int argument){
+    public void RETLW(int k){
         
     }
 
-    public void SUBLW(int argument){
-        W -= argument;
+    public void SUBLW(int k){
+        W -= k;
     }
 
-    public void XORLW(int argument){
-        W ^= argument;
+    public void XORLW(int k){
+        W ^= k;
     }
 
 
     //bit-oriented operations
-    public void BCF(int argument){
+    public void BCF(int bit, int fAdr){
 
     }
 
-    public void BSF(int argument){
+    public void BSF(int bit, int fAdr){
 
     }
 
-    public void BTFSC(int argument){
+    public void BTFSC(int bit, int fAdr){
 
     }
 
-    public void BTFSS(int argument){
+    public void BTFSS(int bit, int fAdr){
 
     }
 
