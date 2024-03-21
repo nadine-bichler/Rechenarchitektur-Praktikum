@@ -32,4 +32,8 @@ public class Decoder{
         int adress = Integer.parseInt(hex, 16);
         return adress;
     }
+
+    public void movlw(){
+        
+    }
 }
