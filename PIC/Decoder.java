@@ -2,49 +2,45 @@ package PIC;
 public class Decoder{
 
     //Working Register
-    int W = 0;;
+    int W = 0;
 
     public void execute (int bcode){
-        //Bitoperation
-        int operation = bcode >> 12;
-
-        //Bitbefehl
-        int command = bcode >> 8;
-
-        //Bitargument
-        int argument = bcode & 0xFF;
-        int adress = bcode & 0x7F;
-        int destinationBit = bcode & 0x80;
     
-        switch (operation){
+        switch (bcode >> 12){
             //Literal operations
             case 0b11:
-                switch (command){
+
+            int k = bcode & 0xFF;
+
+                switch (bcode >> 8){
                     case 0b111110:
-                        ADDLW(argument);
+                        ADDLW(k);
                         break;
                     case 0b111001:
-                        ANDLW(argument);
+                        ANDLW(k);
                         break;
                     case 0b111000:
-                        IORLW(argument);
+                        IORLW(k);
                         break;
                     case 0b110000:
-                        MOVLW(argument);
+                        MOVLW(k);
                         break;
                     case 0b110100:
-                        RETLW(argument);
+                        RETLW(k);
                         break;
                     case 0b111100:
-                        SUBLW(argument);
+                        SUBLW(k);
                         break;
                     case 0b111010:
-                        XORLW(argument);
+                        XORLW(k);
                         break;
                 }
             //Bit-oriented Operations
             case 0b01:
-                switch(command >> 2){
+
+            int argument = bcode & 0x3FF;
+
+                switch(bcode >> 10){
                     case 0b0100:
                         BCF(argument);
                         break;
@@ -60,7 +56,11 @@ public class Decoder{
                 }
             //Byte-oriented operations
             case 0b00:
-                switch (command){
+
+            int dBit = bcode & 0x80;
+            int fAdr = bcode & 0x7F;
+
+                switch (bcode >> 8){
                     case 0b000111:
                         ADDWF(argument);
                         break;
@@ -112,7 +112,7 @@ public class Decoder{
                 }
             //Control operations
             case 0b10:
-                switch(command >> 3){
+                switch(bcode >> 11){
                     case 0b100:
                         CALL();
                         break;
