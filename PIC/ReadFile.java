@@ -12,9 +12,6 @@ public class ReadFile {
         //Programmspeicher (Programmzähler = Index)
         int ROM [] = new int[1024];
 
-        //Working Register
-        int W = 0;;
-
         Decoder decoder = new Decoder();
 
         int x = 0;
@@ -23,7 +20,7 @@ public class ReadFile {
 
             FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim1.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-
+    
             //
             String line = "";
             while ((line = bufferedReader.readLine()) != null) {
@@ -43,7 +40,8 @@ public class ReadFile {
         
         //Test ob richtig in Array gespeichert
         for (int i = 0; i < x; i++){
-            System.out.println(ROM[i]);
+            decoder.execute(ROM[i]);
+            System.out.println(decoder.W);
         }
     }
 }
