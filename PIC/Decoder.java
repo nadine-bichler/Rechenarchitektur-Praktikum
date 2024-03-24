@@ -4,6 +4,8 @@ public class Decoder{
     //Working Register
     int W = 0;
 
+    Flag flags = new Flag();
+
     public void execute (int bcode){
 
         int fAdr = bcode & 0x7F;
@@ -130,6 +132,7 @@ public class Decoder{
     //Literal operations
     public void ADDLW(int k) {
         W += k;
+        flags.C(k, W);
     }
 
     public void ANDLW(int k){
