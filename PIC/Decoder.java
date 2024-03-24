@@ -133,14 +133,18 @@ public class Decoder{
     public void ADDLW(int k) {
         W += k;
         flags.C(k, W);
+        flags.DC(k, W);
+        flags.Z(W);
     }
 
     public void ANDLW(int k){
         W &= k;
+        flags.Z(W);
     }
 
     public void IORLW(int k){
         W |= k;
+        flags.Z(W);
     }
 
     public void MOVLW(int k){
@@ -157,10 +161,14 @@ public class Decoder{
         if (W < 0){
             W *= (-1);
         }
+        flags.C(k, W);
+        flags.DC(k, W);
+        flags.Z(W);
     }
 
     public void XORLW(int k){
         W ^= k;
+        flags.Z(W);
     }
 
 
