@@ -39,7 +39,7 @@ public class ReadFile {
         //Test ob richtig in Array gespeichert
         for (int i = 0; i < x; i++){
             decoder.execute(ROM[i]);
-            System.out.println(decoder.W);
+            decoder.displayStatus();
         }
     }
 }

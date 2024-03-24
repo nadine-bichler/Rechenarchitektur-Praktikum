@@ -4,7 +4,7 @@ public class Decoder{
     //Working Register
     int W = 0;
 
-    Flag flags = new Flag();
+    Flags flags = new Flags();
 
     public void execute (int bcode){
 
@@ -132,8 +132,8 @@ public class Decoder{
     //Literal operations
     public void ADDLW(int k) {
         W += k;
-        flags.C(k, W);
-        flags.DC(k, W);
+        flags.C(W);
+        flags.DC(W);
         flags.Z(W);
     }
 
@@ -157,13 +157,16 @@ public class Decoder{
     }
 
     public void SUBLW(int k){
+        if(W <= k){
+            flags.CFlag = 1;
+        }
+        flags.DC(W);
+        flags.Z(W);
+        
         W -= k;
         if (W < 0){
             W *= (-1);
         }
-        flags.C(k, W);
-        flags.DC(k, W);
-        flags.Z(W);
     }
 
     public void XORLW(int k){
@@ -241,5 +244,9 @@ public class Decoder{
     }
     public void XORWF(int dBit, int fAdr) {
        
+    }
+
+    public void displayStatus(){
+        System.out.println("W:" + W + " C:" + flags.CFlag + " DC:" + flags.DCFlag + " Z:" + flags.ZFlag);
     }
 }
