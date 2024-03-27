@@ -6,7 +6,7 @@ public class Flags {
     int DCFlag;
     
     public void DC(int output){
-        DCFlag = (output > 0xF) ? 1 : 0;
+        DCFlag = (input <= 0xF && output > 0xF) ? 1 : 0;
     }
 
     public void C(int output){
