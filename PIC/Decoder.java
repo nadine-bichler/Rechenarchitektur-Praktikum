@@ -157,16 +157,18 @@ public class Decoder{
     }
 
     public void SUBLW(int k){
-        if(W <= k){
+        W -= k;
+        if (W < 0){
+            W *= (-1);
             flags.CFlag = 1;
+        }else if(W == 0){
+            flags.CFlag = 1;
+        } else {
+            flags.CFlag = 0;
         }
         flags.DC(W);
         flags.Z(W);
         
-        W -= k;
-        if (W < 0){
-            W *= (-1);
-        }
     }
 
     public void XORLW(int k){
