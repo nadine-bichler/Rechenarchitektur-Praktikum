@@ -186,7 +186,12 @@ public class Decoder{
 
 //case 0b00:
     public void ADDWF(int dBit, int fAdr) {
-        
+        if(dBit == 0){
+            
+        }
+        else{
+
+        }
     }
 
     public void ANDWF(int dBit, int fAdr) {
