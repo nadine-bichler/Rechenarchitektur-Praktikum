@@ -5,12 +5,12 @@ public class Flags {
     int CFlag;
     int DCFlag;
     
-    public void DC(int output){
-        DCFlag = (input <= 0xF && output > 0xF) ? 1 : 0;
+    public void DC(int input, int output){
+        DCFlag = ((input % 15) + (output % 15) >= 15) ? 1 : 0;
     }
 
-    public void C(int output){
-        CFlag = (output > 0xFF) ? 1 : 0;
+    public void C(int input, int output){
+        CFlag = ((input % 255) + (output % 255) >= 255) ? 1 : 0;
     }
 
     //?

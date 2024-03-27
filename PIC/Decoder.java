@@ -131,9 +131,10 @@ public class Decoder{
 //case 0b11:
     //Literal operations
     public void ADDLW(int k) {
+        int X = W;
         W += k;
-        flags.C(W);
-        flags.DC(W);
+        flags.C(X, W);
+        flags.DC(X, W);
         flags.Z(W);
     }
 
@@ -157,6 +158,7 @@ public class Decoder{
     }
 
     public void SUBLW(int k){
+        int X = W;
         W -= k;
         if (W < 0){
             W *= (-1);
@@ -166,7 +168,7 @@ public class Decoder{
         } else {
             flags.CFlag = 0;
         }
-        flags.DC(W);
+        flags.DC(X, W);
         flags.Z(W);
         
     }
