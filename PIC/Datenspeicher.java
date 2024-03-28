@@ -24,13 +24,14 @@ public class Datenspeicher {
     }
 
     public int get (int register,int k){
-        int mask = 0b1 << (k);
+        int mask = 0b1 << k;
+        int result;
         if (whichBank() == 0){
-            int result0 = (bank0[register] & mask) >> k;
-            return result0;
+            result = ((bank0[register] & mask) == 0) ? 0 : 1;
+            return result;
         } else{
-            int result1 = (bank1[register] & mask) >> k;
-            return result1;
+            result = ((bank1[register] & mask) == 0) ? 0 : 1;
+            return result;
         }
     }
 
