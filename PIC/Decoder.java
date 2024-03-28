@@ -3,6 +3,9 @@ public class Decoder{
 
     //Working Register
     int W = 0;
+    
+    Datenspeicher datenspeicher = new Datenspeicher();
+  
 
     public void execute (int bcode){
 
@@ -201,15 +204,20 @@ public class Decoder{
 //case 0b00:
     public void ADDWF(int dBit, int fAdr) {
         if(dBit == 0){
-            
+            W = W + datenspeicher.PullDataFromRegister(fAdr);
         }
         else{
-
+            datenspeicher.PushDataToBank(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
     public void ANDWF(int dBit, int fAdr) {
-       
+       if(dBit == 0){
+            W = W & datenspeicher.PullDataFromRegister(fAdr);
+       }
+       else{
+        datenspeicher.PushDataToBank(fAdr, W & datenspeicher.PullDataFromRegister(fAdr));
+       }
     }
     public void COMF(int dBit, int fAdr) {
        
