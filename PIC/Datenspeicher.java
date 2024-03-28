@@ -22,49 +22,57 @@ public class Datenspeicher {
         bank0[3] = 24;      //Status-Register auf 0x18
         bank1[3] = 24;
     }
+
+    public int get (int register,int k){
+        mask = 0b1 << k;
+        if (whichBank() == 0){
+            return (bank0[register] & mask);
+        } else{
+            return (bank1[register] & mask);
+        }
+    }
     
-    public boolean whichBank(int[] bank0, int[] bank1) {
-        if(((bank0[3] & 0b10000) == 1)) {
-            return true;
+    public int whichBank() {
+        if((bank0[3] & 0b10000) == 1) {
+            System.out.println("bank0");
+            return 0;
+        }else {
+            return 1;
         }
-        else if((bank1[3] & 0b10000) == 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-        
+        //else if((bank1[3] & 0b10000) == 1) {
+            //System.out.println("bank1");
+            //return 1;
+        //}
     }
    
     public void PushDataToBank(int Register, int Ergebnis) {   //Port und Tris syncen ?
-        if(whichBank(bank0, bank1) == true) {
+        if(whichBank() == 0) {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
                 bank0[Register] = Ergebnis;
                 bank1[Register] = Ergebnis;
             }
             else {
-                bank1[Register] = Ergebnis;
+                bank0[Register] = Ergebnis;
             }
             
-        }
-        else {
+        }else {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
                 bank0[Register] = Ergebnis;
                 bank1[Register] = Ergebnis;
             }
             else {
-                bank0[Register] = Ergebnis;
+                bank1[Register] = Ergebnis;
             }
         }
         
     }
     
     public int PullDataFromRegister(int Register) {
-        if(whichBank(bank0, bank1) == true) {
-            return bank1[Register];
+        if(whichBank() == 1) {
+            return bank0[Register];
         }
         else {
-            return bank0[Register];
+            return bank1[Register];
         }
     }
 }
