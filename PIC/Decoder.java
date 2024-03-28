@@ -4,8 +4,6 @@ public class Decoder{
     //Working Register
     int W = 0;
 
-   STATUS flags = new STATUS();
-
     public void execute (int bcode){
 
         int fAdr = bcode & 0x7F;
@@ -132,21 +130,25 @@ public class Decoder{
     //Literal operations
     public int ADDLW(int k) {
         W += k;
+        W %= 256;
         return W;
     }
 
     public int ANDLW(int k){
         W &= k;
+        W %= 256;
         return W;
     }
 
     public int IORLW(int k){
         W |= k;
+        W %= 256;
         return W;
     }
 
     public int MOVLW(int k){
         W = k;
+        W %= 256;
         return W;
     }
 
@@ -156,14 +158,16 @@ public class Decoder{
     }
 
     public int SUBLW(int k){
-        k ^= 0xFF;
-        k += 1;
+        W ^= 0xFF;
+        W += 1;
         W += k;
+        W %= 256;
         return W;
     }
 
     public int XORLW(int k){
         W ^= k;
+        W %= 256;
         return W;
     }
 
