@@ -42,8 +42,7 @@ public class Datenspeicher {
     }
     
     public int whichBank() {
-        if((bank0[3] & 0b10000) == 1) {
-            System.out.println("bank0");
+        if((bank1[3] & 0b10000) == 1) {
             return 0;
         }else {
             return 1;
@@ -69,11 +68,10 @@ public class Datenspeicher {
                 bank1[Register] = Ergebnis;
             }
         }
-        
     }
     
     public int PullDataFromRegister(int Register) {
-        if(whichBank() == 1) {
+        if(whichBank() == 0) {
             return bank0[Register];
         }
         else {
