@@ -35,17 +35,20 @@ public class Datenspeicher {
         }
     }
 
-    public int set (int register,int k){
-        int mask = 0b1 << (k);
-        if (whichBank() == 0){
-            return (bank0[register] | mask);
+    public void set (int register,int k){
+        int mask = 0b1 << k;
+        if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
+            bank0[register] |= mask;
+            bank1[register] |= mask;
+        } else if (whichBank() == 0){
+            bank0[register] |= mask;
         } else{
-            return (bank1[register] | mask);
+            bank1[register] |= mask;
         }
     }
     
     public int whichBank() {
-        if((bank1[3] & 0b10000) == 1) {
+        if((bank0[3] & 0b100000) == 0) {
             return 0;
         }else {
             return 1;
