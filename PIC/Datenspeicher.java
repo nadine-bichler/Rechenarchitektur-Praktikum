@@ -24,7 +24,7 @@ public class Datenspeicher {
     }
 
     public int get (int register,int k){
-        mask = 0b1 << k;
+        int mask = 0b1 << k;
         if (whichBank() == 0){
             return (bank0[register] & mask);
         } else{
@@ -39,10 +39,6 @@ public class Datenspeicher {
         }else {
             return 1;
         }
-        //else if((bank1[3] & 0b10000) == 1) {
-            //System.out.println("bank1");
-            //return 1;
-        //}
     }
    
     public void PushDataToBank(int Register, int Ergebnis) {   //Port und Tris syncen ?
