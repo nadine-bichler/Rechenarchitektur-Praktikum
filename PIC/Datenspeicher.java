@@ -31,6 +31,15 @@ public class Datenspeicher {
             return (bank1[register] & mask);
         }
     }
+
+    public int set (int register,int k){
+        int mask = 0b1 << k;
+        if (whichBank() == 0){
+            return (bank0[register] | mask);
+        } else{
+            return (bank1[register] | mask);
+        }
+    }
     
     public int whichBank() {
         if((bank0[3] & 0b10000) == 1) {
