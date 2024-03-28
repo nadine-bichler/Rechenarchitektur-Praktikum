@@ -11,6 +11,8 @@ public class Test {
         speicher.set(3, 5);
         System.out.println(speicher.get(3, 5));
         System.out.println(Integer.toBinaryString(speicher.PullDataFromRegister(3)));
+        speicher.set(3, 5);
+        System.out.println(Integer.toBinaryString(speicher.PullDataFromRegister(0)));
 
     }
 }
