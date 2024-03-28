@@ -37,7 +37,7 @@ public class Datenspeicher {
 
     public void set (int register,int k){
         int mask = 0b1 << k;
-        if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
+        if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 79))) {
             bank0[register] |= mask;
             bank1[register] |= mask;
         } else if (whichBank() == 0){
