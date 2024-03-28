@@ -46,7 +46,7 @@ public class Datenspeicher {
             } else{
                 bank1[register] |= mask;
             }
-        }else if (get(register, k) == 1){
+        }else{
             int mask = 0b11011111;
             if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 79))) {
                 bank0[register] &= mask;
