@@ -134,18 +134,23 @@ public class Decoder{
     public int ADDLW(int k) {
         W += k;
         W %= 256;
+        datenspeicher.ZFlag(W);
+        datenspeicher.DCFlag(W, k);
+        datenspeicher.CFlag(W, k);
         return W;
     }
 
     public int ANDLW(int k){
         W &= k;
         W %= 256;
+        datenspeicher.ZFlag(W);
         return W;
     }
 
     public int IORLW(int k){
         W |= k;
         W %= 256;
+        datenspeicher.ZFlag(W);
         return W;
     }
 
@@ -165,12 +170,24 @@ public class Decoder{
         W += 1;
         W += k;
         W %= 256;
+        if (W >= 0){
+            datenspeicher.set1(3, 0);
+        } else {
+            datenspeicher.set0(3, 0);
+        }
+        int DCW = W & 0xF;
+        if (DCW >= 0){
+            datenspeicher.set1(3, 1);
+        }else {
+            datenspeicher.set0(3, 1);
+        }
         return W;
     }
 
     public int XORLW(int k){
         W ^= k;
         W %= 256;
+        datenspeicher.ZFlag(W);
         return W;
     }
 

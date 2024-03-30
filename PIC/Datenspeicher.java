@@ -35,7 +35,7 @@ public class Datenspeicher {
         }
     }
 
-    public void set(int register,int k){
+    public void set1(int register,int k){
         if (get(register, k) == 0){
             int mask = 0b1 << k;
             if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 79))) {
@@ -46,7 +46,11 @@ public class Datenspeicher {
             } else{
                 bank1[register] |= mask;
             }
-        }else{
+        }
+    }
+
+    public void set0(int register, int k){
+        if(get(register, k) == 1){
             int mask = 0b11011111;
             if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 79))) {
                 bank0[register] &= mask;
@@ -57,6 +61,7 @@ public class Datenspeicher {
                 bank1[register] &= mask;
             }
         }
+
     }
     
     public int whichBank() {
@@ -95,5 +100,39 @@ public class Datenspeicher {
         else {
             return bank1[Register];
         }
+    }
+
+    public int ZFlag(int output){
+        if (output == 0){
+            set1(3, 2);
+        }else {
+            set0(3, 2);
+        }
+        return get(3, 2);
+    }
+
+    public int DCFlag (int output, int k){
+        output &= 0xF;
+        k &= 0xF;
+        if (output + k >= 16){
+            set1(3, 1);
+        }else {
+            set0(3, 1);
+        }
+        return get(3, 1);
+    }
+
+    public int CFlag (int output, int k){
+        output &= 0xFF;
+        if (output + k >= 256){
+            set1(3, 0);
+        }else {
+            set0(3, 0);
+        }
+        return get(3, 0);
+    }
+
+    public void Flags(){
+        System.out.println("Z: " + get(3, 2) + " DC: " + get(3, 1) + " C: " + get(3, 0));
     }
 }

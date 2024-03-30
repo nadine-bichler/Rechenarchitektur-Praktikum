@@ -12,6 +12,8 @@ public class ReadFile {
 
         Decoder decoder = new Decoder();
 
+        Datenspeicher datenspeicher = new Datenspeicher();
+
         int x = 0;
 
         try {
@@ -40,6 +42,7 @@ public class ReadFile {
         for (int i = 0; i < x; i++){
             decoder.execute(ROM[i]);
             System.out.println(decoder.W);
+            datenspeicher.Flags();
         }
     }
 }
