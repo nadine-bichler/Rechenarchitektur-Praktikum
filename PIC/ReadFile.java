@@ -42,7 +42,7 @@ public class ReadFile {
         for (int i = 0; i < x; i++){
             decoder.execute(ROM[i]);
             System.out.println(decoder.W);
-            datenspeicher.Flags();
+            decoder.Flags();
         }
     }
 }
