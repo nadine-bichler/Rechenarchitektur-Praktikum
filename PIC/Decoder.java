@@ -40,6 +40,7 @@ public class Decoder{
                         XORLW(k);
                         break;
                 }
+                break;
             //Bit-oriented Operations
             case 0b01:
 
@@ -134,18 +135,23 @@ public class Decoder{
     public int ADDLW(int k) {
         W += k;
         W %= 256;
+        ZFlag(W);
+        DCFlag(W, k);
+        CFlag(W, k);
         return W;
     }
 
     public int ANDLW(int k){
         W &= k;
         W %= 256;
+        ZFlag(W);
         return W;
     }
 
     public int IORLW(int k){
         W |= k;
         W %= 256;
+        ZFlag(W);
         return W;
     }
 
@@ -165,12 +171,24 @@ public class Decoder{
         W += 1;
         W += k;
         W %= 256;
+        if (W >= 0){
+            datenspeicher.set1(3, 0);
+        } else {
+            datenspeicher.set0(3, 0);
+        }
+        int DCW = W & 0xF;
+        if (DCW >= 0){
+            datenspeicher.set1(3, 1);
+        }else {
+            datenspeicher.set0(3, 1);
+        }
         return W;
     }
 
     public int XORLW(int k){
         W ^= k;
         W %= 256;
+        ZFlag(W);
         return W;
     }
 
@@ -273,5 +291,37 @@ public class Decoder{
     }
     public void XORWF(int dBit, int fAdr) {
        
+    }
+
+
+    public void ZFlag(int output){
+        if (output == 0){
+            datenspeicher.set1(3, 2);
+        }else {
+            datenspeicher.set0(3, 2);
+        }
+    }
+
+    public void DCFlag (int output, int k){
+        output &= 0xF;
+        k &= 0xF;
+        if (output + k >= 16){
+            datenspeicher.set1(3, 1);
+        }else {
+            datenspeicher.set0(3, 1);
+        }
+    }
+
+    public void CFlag (int output, int k){
+        output &= 0xFF;
+        if (output + k >= 256){
+            datenspeicher.set1(3, 0);
+        }else {
+            datenspeicher.set0(3, 0);
+        }
+    }
+
+    public void Flags(){
+        System.out.println("C: " + datenspeicher.get(3, 0) +" DC: " + datenspeicher.get(3, 1) + " Z: " + datenspeicher.get(3, 2));
     }
 }
