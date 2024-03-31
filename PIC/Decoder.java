@@ -202,34 +202,46 @@ public class Decoder{
     }
 
 //case 0b00:
-    public void ADDWF(int dBit, int fAdr) {
+    public void ADDWF(int dBit, int fAdr) {     //C, DC, Z-Flag muss noch manipuliert werden
         if(dBit == 0){
             W = W + datenspeicher.PullDataFromRegister(fAdr);
         }
         else{
-            datenspeicher.PushDataToBank(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
+            datenspeicher.PushDataToRegister(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
-    public void ANDWF(int dBit, int fAdr) {
+    public void ANDWF(int dBit, int fAdr) {     //Z-Flag muss noch manipuliert werden
        if(dBit == 0){
             W = W & datenspeicher.PullDataFromRegister(fAdr);
        }
        else{
-        datenspeicher.PushDataToBank(fAdr, W & datenspeicher.PullDataFromRegister(fAdr));
+        datenspeicher.PushDataToRegister(fAdr, W & datenspeicher.PullDataFromRegister(fAdr));
        }
     }
     public void COMF(int dBit, int fAdr) {
        
     }
-    public void DECF(int dBit, int fAdr) {
-       
+    public void DECF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
+       int save = datenspeicher.PullDataFromRegister(fAdr) - 1;
+       if(dBit == 0){
+            W = save;
+       }
+       else{
+            datenspeicher.PushDataToRegister(fAdr, save);
+       }
     }
     public void DECFSZ(int dBit, int fAdr) {
        
     }
-    public void INCF(int dBit, int fAdr) {
-       
+    public void INCF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
+        int save = datenspeicher.PullDataFromRegister(fAdr) + 1;
+        if(dBit == 0){
+             W = save;
+        }
+        else{
+             datenspeicher.PushDataToRegister(fAdr, save);
+        }
     }
     public void INCFSZ(int dBit, int fAdr) {
        
@@ -237,8 +249,15 @@ public class Decoder{
     public void IORWF(int dBit, int fAdr) {
        
     }
-    public void MOVF(int dBit, int fAdr) {
-       
+    public void MOVF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
+       int save = datenspeicher.PullDataFromRegister(fAdr);
+
+       if(dBit == 0){
+            W = save;
+       }
+       else{
+            datenspeicher.PushDataToRegister(fAdr, save);       
+       }
     }
     public void RLF(int dBit, int fAdr) {
        

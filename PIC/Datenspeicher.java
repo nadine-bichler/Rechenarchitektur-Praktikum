@@ -1,6 +1,6 @@
 package PIC;
 public class Datenspeicher {
-    int[] bank0;
+    int[] bank0;        //Option-Register ?
     int[] bank1;
     
     public Datenspeicher() {    //Register auf default Werte setzen
@@ -67,7 +67,7 @@ public class Datenspeicher {
         }
     }
    
-    public void PushDataToBank(int Register, int Ergebnis) {   //Port und Tris syncen ?
+    public void PushDataToRegister(int Register, int Ergebnis) {   //Port und Tris syncen ?
         if(whichBank() == 0) {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
                 bank0[Register] = Ergebnis;
