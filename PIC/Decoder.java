@@ -220,28 +220,49 @@ public class Decoder{
     }
 
 //case 0b00:
-    public void ADDWF(int dBit, int fAdr) {     //C, DC, Z-Flag muss noch manipuliert werden
+    public void ADDWF(int dBit, int fAdr) {    //C, DC, ZFlag werden manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+    	    CFlag(W, save);
+            DCFlag(W, save);
+            ZFlag(W + save); 
+
         if(dBit == 0){
-            W = W + datenspeicher.PullDataFromRegister(fAdr);
+            W = W + save;           
         }
-        else{
-            datenspeicher.PushDataToRegister(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
+        else{  
+            datenspeicher.PushDataToRegister(fAdr, W + save);
         }
     }
 
-    public void ANDWF(int dBit, int fAdr) {     //Z-Flag muss noch manipuliert werden
+    public void ANDWF(int dBit, int fAdr) {     //ZFlag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        ZFlag(W & save);
+
        if(dBit == 0){
-            W = W & datenspeicher.PullDataFromRegister(fAdr);
+            W = W & save;
        }
        else{
-        datenspeicher.PushDataToRegister(fAdr, W & datenspeicher.PullDataFromRegister(fAdr));
+        datenspeicher.PushDataToRegister(fAdr, W & save);
        }
     }
-    public void COMF(int dBit, int fAdr) {
-       
+    public void COMF(int dBit, int fAdr) {  //ZFlag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0xFF;
+        ZFlag(mask ^ save);
+
+       if(dBit == 0){
+            W = mask ^ save;
+       }
+       else{
+            datenspeicher.PushDataToRegister(fAdr, mask ^ save);
+       }
     }
-    public void DECF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
-       int save = datenspeicher.PullDataFromRegister(fAdr) - 1;
+
+    public void DECF(int dBit, int fAdr) {      //ZFlag wird manipuliert
+       int save = datenspeicher.PullDataFromRegister(fAdr);
+       save = save - 1;
+       ZFlag(save);
+       
        if(dBit == 0){
             W = save;
        }
@@ -249,11 +270,27 @@ public class Decoder{
             datenspeicher.PushDataToRegister(fAdr, save);
        }
     }
-    public void DECFSZ(int dBit, int fAdr) {
+    public void DECFSZ(int dBit, int fAdr) {    //Keine Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        save = save - 1 ;
+        ZFlag(save);
+
+        if(dBit == 0){
+            W = save;
+            if(W == 0){
+//                PC++;     naechster Befehl wird uebersprungen
+            }
+       }
+       else{
+            datenspeicher.PushDataToRegister(fAdr, save);
+       }
        
     }
-    public void INCF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
-        int save = datenspeicher.PullDataFromRegister(fAdr) + 1;
+    public void INCF(int dBit, int fAdr) {      //Z-Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        ZFlag(save - 1);
+        save = save - 1;
+
         if(dBit == 0){
              W = save;
         }
@@ -261,36 +298,128 @@ public class Decoder{
              datenspeicher.PushDataToRegister(fAdr, save);
         }
     }
-    public void INCFSZ(int dBit, int fAdr) {
-       
+
+    public void INCFSZ(int dBit, int fAdr) {    //Keine Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        save = save + 1 ;
+        ZFlag(save);
+
+        if(dBit == 0){
+            W = save;
+            if(W == 0){
+//                PC++;                                                         naechster Befehl wird uebersprungen
+            }
+       }
+       else{
+            datenspeicher.PushDataToRegister(fAdr, save);
+       }
     }
-    public void IORWF(int dBit, int fAdr) {
-       
+    public void IORWF(int dBit, int fAdr) { //ZFlag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        ZFlag(W | save);
+
+        if(dBit == 0){
+            W = W | save;
+        }
+        else{
+            datenspeicher.PushDataToRegister(fAdr, W | save);
+           }
     }
-    public void MOVF(int dBit, int fAdr) {      //Z-Flag muss noch manipuliert werden
-       int save = datenspeicher.PullDataFromRegister(fAdr);
+
+    public void MOVF(int dBit, int fAdr) {      //Z-Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        ZFlag(W);
 
        if(dBit == 0){
-            W = save;
+            W = save;  
        }
        else{
             datenspeicher.PushDataToRegister(fAdr, save);       
        }
+
     }
-    public void RLF(int dBit, int fAdr) {
+    public void RLF(int dBit, int fAdr) {   //CFlag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0x80;
+        int storage = mask & save;
+
+        if(storage == 0){
+            CFlag(255, 1);
+        }
+        else{
+            CFlag(0, 0);
+        }
+
+        if(dBit == 0){
+            W = save << 1;
+        }
+        else{
+            datenspeicher.PushDataToRegister(fAdr, save << 1);
+        }
+    }
+
+    public void RRF(int dBit, int fAdr) {   //CFlag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0x01;
+        int storage = mask & save;
+
+        if(storage == 0){
+            CFlag(255, 1);
+        }
+        else{
+            CFlag(0, 0);
+        }
+
+        if(dBit == 0){
+            W = save >>> 1;
+        }
+        else{
+            datenspeicher.PushDataToRegister(fAdr, save >>> 1);
+        }
+    }
+
+    public void SUBWF(int dBit, int fAdr) { //C, DC, ZFlag werden manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+//    	    CFlag(W, save);                                                         Flags muessen noch erledigt werden
+//            DCFlag(W, save);
+            ZFlag(save - W); 
+
+        if(dBit == 0){
+            W = save - W;           
+        }
+        else{  
+            datenspeicher.PushDataToRegister(fAdr, save - W);
+        }
+    }
+
+    public void SWAPF(int dBit, int fAdr) { //Keine Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        int mask1 = 0xF0;
+        int mask2 = 0x0F;
+        int storage1;
+        int storage2;
+
+        storage1 = (mask1 & save) >>> 4;
+        storage2 = (mask2 & save) << 4;
+
+        if(dBit == 0){
+            W = storage2 ^ storage1;
+        }
+        else{
+            datenspeicher.PushDataToRegister(fAdr, storage2 ^ storage1);
+        }
        
     }
-    public void RRF(int dBit, int fAdr) {
-       
-    }
-    public void SUBWF(int dBit, int fAdr) {
-       
-    }
-    public void SWAPF(int dBit, int fAdr) {
-       
-    }
-    public void XORWF(int dBit, int fAdr) {
-       
+    public void XORWF(int dBit, int fAdr) { //Keine Flag wird manipuliert
+        int save = datenspeicher.PullDataFromRegister(fAdr);
+        ZFlag(W ^ save);
+
+        if(dBit == 0){
+            W = W ^ save;
+        }
+        else{
+            datenspeicher.PushDataToRegister(fAdr, W ^ save);
+           }
     }
 
 
