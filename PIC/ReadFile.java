@@ -13,7 +13,7 @@ public class ReadFile {
 
         //CALL & GOTO auch in Programmspeicher?
 
-        Stack stack = new stack(8);
+        ArrayStack stack = new ArrayStack(8);
 
         Decoder decoder = new Decoder();
 
