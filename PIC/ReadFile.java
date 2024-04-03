@@ -2,6 +2,7 @@ package PIC;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Stack;
 
 public class ReadFile {
 
@@ -11,6 +12,8 @@ public class ReadFile {
         int ROM [] = new int[1024];
 
         //CALL & GOTO auch in Programmspeicher?
+
+        Stack<E> stack = new stack(8);
 
         Decoder decoder = new Decoder();
 
@@ -43,6 +46,11 @@ public class ReadFile {
             System.out.println(decoder.W);
             decoder.Flags();
         }
+
+        System.out.println(stack.push(0x10011010));
+        System.out.println(stack.top());
+        stack.pop();
+        System.out.println(stack.top());
     }
 }
 
