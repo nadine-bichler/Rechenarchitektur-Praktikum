@@ -2,18 +2,18 @@ package PIC;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Stack;
 
 public class ReadFile {
 
     public static void main(String[] args){
 
-        //Programmspeicher (Programmzähler = Index)
+        //Programmspeicher
         int ROM [] = new int[1024];
+
+        PC pc = new PC(); 
 
         //CALL & GOTO auch in Programmspeicher?
 
-        ArrayStack stack = new ArrayStack(8);
         Decoder decoder = new Decoder();
 
         int x = 0;
@@ -31,6 +31,7 @@ public class ReadFile {
                 System.out.println(line);
                 ROM [x] = Integer.parseInt(line.substring(5,9), 16);
                 x++;
+
             }
 
             bufferedReader.close();
@@ -42,14 +43,10 @@ public class ReadFile {
         //Test ob richtig in Array gespeichert
         for (int i = 0; i < x; i++){
             decoder.execute(ROM[i]);
+            pc.next();
             System.out.println(decoder.W);
             decoder.Flags();
         }
-
-        stack.push(0x10011010);
-        System.out.println(stack.top());
-        stack.pop();
-        System.out.println(stack.top());
     }
 }
 

@@ -5,7 +5,6 @@ public class Decoder{
     int W = 0;
     
     Datenspeicher datenspeicher = new Datenspeicher();
-  
 
     public void execute (int bcode){
 
