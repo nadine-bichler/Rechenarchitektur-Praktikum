@@ -1,12 +1,11 @@
-import java.util.EmptyStackException;
 
-public class ArrayStack {
+public class Stack {
 	// Attribute
 	String[] elements;
 	int currentSize;
 
 	// Fähigkeiten
-	public stack(int capacity) {
+	public Stack(int capacity) {
 		elements = new String[capacity];
 		currentSize = 0;
 	}
@@ -15,10 +14,7 @@ public class ArrayStack {
 	 * puts an element on top of the stack, if the stack is full the lowest element
 	 * is removed and the others slide down to create space
 	 */
-	public void push(String element) throws FullStackException {
-		if (currentSize == elements.length) {
-			throw new FullStackException("Stack full: maxiumum capacity is " + elements.length);
-		}
+	public void push(int element){
 		elements[currentSize] = element;
 		currentSize += 1;
 	}
@@ -26,10 +22,7 @@ public class ArrayStack {
 	/**
 	 * removes the element on top of the stack if the stack is filled
 	 */
-	public String pop() throws EmptyStackException {
-		if (isEmpty()) {
-			throw new EmptyStackException();
-		}
+	public String pop(){
 		currentSize -= 1;
 		return elements[currentSize] = null;
 	}
@@ -37,10 +30,7 @@ public class ArrayStack {
 	/**
 	 * returns the element on top of the stack if the stack is filled
 	 */
-	public String top() throws EmptyStackException {
-		if (isEmpty()) {
-			throw new EmptyStackException();
-		}
+	public String top(){
 		return elements[currentSize - 1];
 	}
 
@@ -48,8 +38,8 @@ public class ArrayStack {
 	 * checks if the stack is empty
 	 */
 	public boolean isEmpty() {
-		for (String element : elements) {
-			if (element != null) {
+		for (int element : elements) {
+			if (element != 0) {
 				return false;
 			}
 		}
