@@ -1,8 +1,3 @@
-/**
- * Creates a stack with arrays
- * @author Nadine Bichler
- */
-package PIC;
 import java.util.EmptyStackException;
 
 public class ArrayStack {
@@ -11,7 +6,7 @@ public class ArrayStack {
 	int currentSize;
 
 	// Fähigkeiten
-	public ArrayStack(int capacity) {
+	public stack(int capacity) {
 		elements = new String[capacity];
 		currentSize = 0;
 	}
