@@ -6,6 +6,10 @@ public class Decoder{
     
     Datenspeicher datenspeicher = new Datenspeicher();
 
+    ArrayStack stack = new ArrayStack(8);
+
+    PC pc = new PC();
+
     public void execute (int bcode){
 
         int fAdr = bcode & 0x7F;
@@ -118,14 +122,14 @@ public class Decoder{
             //Control operations
             case 0b10:
 
-            k = bcode & 0x7FF;
+            k = bcode & 0xFFF;
 
                 switch(bcode >> 11){
                     case 0b100:
-                        CALL();
+                        CALL(k);
                         break;
                     case 0b101:
-                        GOTO();
+                        GOTO(k);
                         break;
                 }
 
@@ -213,11 +217,12 @@ public class Decoder{
     }
 
     //control operations
-    public void CALL(){
-        
+    public void CALL(int k){
+        stack.push(pc.next());
+
     }
 
-    public void GOTO(){
+    public void GOTO(int k){
 
     }
 

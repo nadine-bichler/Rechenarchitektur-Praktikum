@@ -10,7 +10,7 @@ public class ReadFile {
         //Programmspeicher
         int ROM [] = new int[1024];
 
-        PC pc = new PC(); 
+        //PC pc = new PC(); 
 
         //CALL & GOTO auch in Programmspeicher?
 
@@ -43,7 +43,7 @@ public class ReadFile {
         //Test ob richtig in Array gespeichert
         for (int i = 0; i < x; i++){
             decoder.execute(ROM[i]);
-            pc.next();
+            //pc.next();
             System.out.println(decoder.W);
             decoder.Flags();
         }

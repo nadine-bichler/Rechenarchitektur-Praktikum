@@ -10,7 +10,8 @@ public class PC {
         return pc;
     }
 
-    public void next(){
+    public int next(){
         pc += 1;
+        return pc;
     }
 }
