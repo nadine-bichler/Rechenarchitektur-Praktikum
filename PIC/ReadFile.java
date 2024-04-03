@@ -13,7 +13,7 @@ public class ReadFile {
 
         //CALL & GOTO auch in Programmspeicher?
 
-        Stack stack = new stack(8);
+        Arraystack stack = new Arraystack(8);
 
         Decoder decoder = new Decoder();
 
@@ -47,7 +47,7 @@ public class ReadFile {
             decoder.Flags();
         }
 
-        System.out.println(stack.push(0x10011010));
+        stack.push(0x10011010);
         System.out.println(stack.top());
         stack.pop();
         System.out.println(stack.top());

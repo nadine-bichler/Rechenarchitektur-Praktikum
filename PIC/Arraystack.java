@@ -1,12 +1,12 @@
-
-public class Stack {
+package PIC;
+public class Arraystack {
 	// Attribute
-	String[] elements;
+	int[] elements;
 	int currentSize;
 
 	// Fähigkeiten
-	public Stack(int capacity) {
-		elements = new String[capacity];
+	public Arraystack(int capacity) {
+		elements = new int[capacity];
 		currentSize = 0;
 	}
 
@@ -22,15 +22,15 @@ public class Stack {
 	/**
 	 * removes the element on top of the stack if the stack is filled
 	 */
-	public String pop(){
+	public int pop(){
 		currentSize -= 1;
-		return elements[currentSize] = null;
+		return elements[currentSize] = 0;
 	}
 
 	/**
 	 * returns the element on top of the stack if the stack is filled
 	 */
-	public String top(){
+	public int top(){
 		return elements[currentSize - 1];
 	}
 
