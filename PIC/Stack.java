@@ -1,12 +1,12 @@
 import java.util.EmptyStackException;
 
-public class ArrayStack {
+public class Stack {
 	// Attribute
 	String[] elements;
 	int currentSize;
 
 	// Fähigkeiten
-	public stack(int capacity) {
+	public Stack(int capacity) {
 		elements = new String[capacity];
 		currentSize = 0;
 	}

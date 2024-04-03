@@ -233,18 +233,20 @@ public class Decoder{
             W = W + save;           
         }
         else{
-            datenspeicher.PushDataToBank(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
+            datenspeicher.PushDataToRegister(fAdr, W + datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
     public void ANDWF(int dBit, int fAdr) {
+        int save = datenspeicher.PullDataFromRegister(fAdr);
        if(dBit == 0){
             W = W & save;
        }
        else{
-        datenspeicher.PushDataToBank(fAdr, W & datenspeicher.PullDataFromRegister(fAdr));
+        datenspeicher.PushDataToRegister(fAdr, W & save);
        }
     }
+
     public void COMF(int dBit, int fAdr) {  //ZFlag wird manipuliert
         int save = datenspeicher.PullDataFromRegister(fAdr);
         int mask = 0xFF;
