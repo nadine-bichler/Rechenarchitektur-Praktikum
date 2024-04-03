@@ -10,12 +10,11 @@ public class ReadFile {
         //Programmspeicher (Programmzähler = Index)
         int ROM [] = new int[1024];
 
+        //CALL & GOTO auch in Programmspeicher?
+
         Decoder decoder = new Decoder();
 
-        Datenspeicher datenspeicher = new Datenspeicher();
-
         int x = 0;
-
         try {
 
             FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim1.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
