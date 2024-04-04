@@ -462,11 +462,11 @@ public class Decoder{
     }
 
     public void RETFIE (int dBit, int fAdr) {   //Keine Flags werden manipuliert
-
+        
     }
 
     public void RETURN (int dBit, int fAdr) {   //Keine Flags werden manipuliert
-        
+        PC.jump(Stack.pop());
     }
 
     public void SLEEP (int dBit, int fAdr) {    //|TO und|PD wird manipuliert
