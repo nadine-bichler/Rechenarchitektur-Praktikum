@@ -10,8 +10,6 @@ public class ReadFile {
         //Programmspeicher
         int ROM [] = new int[1024];
 
-        //PC pc = new PC(); 
-
         //CALL & GOTO auch in Programmspeicher?
 
         Decoder decoder = new Decoder();
@@ -41,10 +39,9 @@ public class ReadFile {
             }
         
         //Test ob richtig in Array gespeichert
-        while(ROM[decoder.pc.get()] != 0){
-            decoder.execute(ROM[decoder.pc.get()]);
+        while(ROM[PC.get()] != 0){
+            decoder.execute(ROM[PC.get()]);
             System.out.println(decoder.W);
-            decoder.Flags();
         }
     }
 }

@@ -1,12 +1,11 @@
 package PIC;
-public class ArrayStack {
+public class Stack {
 	// Attribute
-	int[] elements;
-	int currentSize;
+	private static int[] elements = new int [8];
+	private static int currentSize;
 
 	// Fähigkeiten
-	public ArrayStack(int capacity) {
-		elements = new int[capacity];
+	static {
 		currentSize = 0;
 	}
 
@@ -14,7 +13,7 @@ public class ArrayStack {
 	 * puts an element on top of the stack, if the stack is full the lowest element
 	 * is removed and the others slide down to create space
 	 */
-	public void push(int element){
+	public static void push(int element){
 		elements[currentSize] = element;
 		currentSize += 1;
 	}
@@ -22,7 +21,7 @@ public class ArrayStack {
 	/**
 	 * removes the element on top of the stack if the stack is filled
 	 */
-	public int pop(){
+	public static int pop(){
 		currentSize -= 1;
 		return elements[currentSize] = 0;
 	}
@@ -30,19 +29,7 @@ public class ArrayStack {
 	/**
 	 * returns the element on top of the stack if the stack is filled
 	 */
-	public int top(){
+	public static int top(){
 		return elements[currentSize - 1];
-	}
-
-	/**
-	 * checks if the stack is empty
-	 */
-	public boolean isEmpty() {
-		for (int element : elements) {
-			if (element != 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 }

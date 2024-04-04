@@ -1,21 +1,19 @@
 package PIC;
+
 public class PC {
-    int pc;
+    private static int pc = 0;
 
-    public PC(){
-        pc = 0;
-    }
-
-    public int get(){
+    public static int get(){
         return pc;
     }
 
-    public int next(){
+    public static int next(){
         pc += 1;
+
         return pc;
     }
 
-    public int jump (int spot){
+    public static int jump (int spot){
         pc = spot;
         return pc;
     }
