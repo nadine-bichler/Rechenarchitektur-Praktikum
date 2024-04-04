@@ -121,6 +121,14 @@ public class Decoder{
                         pc.next();
                         break;
                     case 0b000000:
+                        switch(bcode & 0xFF){
+                            case 0b0:
+                            NOP();
+                            case 0b01100100:
+                            CLRWDT();
+                            case 0b1001:
+                            RETFIE();
+                        }
                         //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         break;
                     case 0b001101:
@@ -147,7 +155,7 @@ public class Decoder{
             //Control operations
             case 0b10:
 
-            k = bcode & 0xFFF;
+            k = bcode & 0x7FF;
 
                 switch(bcode >> 11){
                     case 0b100:
@@ -246,11 +254,11 @@ public class Decoder{
     //control operations
     public void CALL(int k){
         stack.push(pc.next());
-
+        pc.jump(k);
     }
 
     public void GOTO(int k){
-
+        pc.jump(k);
     }
 
 //case 0b00:

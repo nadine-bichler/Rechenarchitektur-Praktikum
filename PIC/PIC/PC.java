@@ -14,4 +14,9 @@ public class PC {
         pc += 1;
         return pc;
     }
+
+    public int jump (int spot){
+        pc = spot;
+        return pc;
+    }
 }
