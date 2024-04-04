@@ -117,11 +117,11 @@ public class Decoder{
                     case 0b000000:
                         switch(bcode & 0xFF){
                             case 0b0:
-                            NOP();
+                            //NOP();
                             case 0b01100100:
-                            CLRWDT();
+                            //CLRWDT();
                             case 0b1001:
-                            RETFIE();
+                            //RETFIE();
                         }
                         //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         break;
@@ -170,18 +170,23 @@ public class Decoder{
     public int ADDLW(int k) {
         W += k;
         W %= 256;
+        Datenspeicher.CFlag(W, k);
+        Datenspeicher.DCFlag(W, k);
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
     public int ANDLW(int k){
         W &= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
     public int IORLW(int k){
         W |= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
@@ -218,6 +223,7 @@ public class Decoder{
     public int XORLW(int k){
         W ^= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
@@ -242,11 +248,13 @@ public class Decoder{
     //control operations
     public void CALL(int k){
         Stack.push(PC.next());
-        PC.jump(k);
+        int jumpaddress = ((Datenspeicher.PullDataFromRegister(10) >> 3) << 11) | k; 
+        PC.jump(jumpaddress);
     }
 
     public void GOTO(int k){
-        PC.jump(k);
+        int jumpaddress = ((Datenspeicher.PullDataFromRegister(10) >> 3) << 11) | k; 
+        PC.jump(jumpaddress);
     }
 
 //case 0b00:
