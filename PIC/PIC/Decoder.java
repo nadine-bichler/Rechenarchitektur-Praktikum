@@ -23,24 +23,31 @@ public class Decoder{
                 switch (bcode >> 8){
                     case 0b111110:
                         ADDLW(k);
+                        pc.next();
                         break;
                     case 0b111001:
                         ANDLW(k);
+                        pc.next();
                         break;
                     case 0b111000:
                         IORLW(k);
+                        pc.next();
                         break;
                     case 0b110000:
                         MOVLW(k);
+                        pc.next();
                         break;
                     case 0b110100:
                         RETLW(k);
+                        pc.next();
                         break;
                     case 0b111100:
                         SUBLW(k);
+                        pc.next();
                         break;
                     case 0b111010:
                         XORLW(k);
+                        pc.next();
                         break;
                 }
                 break;
@@ -53,15 +60,19 @@ public class Decoder{
                 switch(bcode >> 10){
                     case 0b0100:
                         BCF(bit, fAdr);
+                        pc.next();
                         break;
                     case 0b0101:
                         BSF(bit, fAdr);
+                        pc.next();
                         break;
                     case 0b0110:
                         BTFSC(bit, fAdr);
+                        pc.next();
                         break;
                     case 0b0111:
                         BTFSS(bit, fAdr);
+                        pc.next();
                         break;
                 }
             //Byte-oriented operations
@@ -72,51 +83,65 @@ public class Decoder{
                 switch (bcode >> 8){
                     case 0b000111:
                         ADDWF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000101:
                         ANDWF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000001:
                         //CRLF oder CRLW
                         break;
                     case 0b001001:
                         COMF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000011:
                         DECF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001011:
                         DECFSZ(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001010:
                         INCF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001111:
                         INCFSZ(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000100:
                         IORWF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001000:
                         MOVF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000000:
                         //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         break;
                     case 0b001101:
                         RLF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001100:
                         RRF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000010:
                         SUBWF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b001110:
                         SWAPF(dBit, fAdr);
+                        pc.next();
                         break;
                     case 0b000110:
                         XORWF(dBit, fAdr);
+                        pc.next();
                         break;
                 }
             //Control operations
@@ -127,9 +152,11 @@ public class Decoder{
                 switch(bcode >> 11){
                     case 0b100:
                         CALL(k);
+                        pc.next();
                         break;
                     case 0b101:
                         GOTO(k);
+                        pc.next();
                         break;
                 }
 

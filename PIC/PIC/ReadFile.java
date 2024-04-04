@@ -41,9 +41,8 @@ public class ReadFile {
             }
         
         //Test ob richtig in Array gespeichert
-        for (int i = 0; i < x; i++){
-            decoder.execute(ROM[i]);
-            //pc.next();
+        while(ROM[decoder.pc.get()] != 0){
+            decoder.execute(ROM[decoder.pc.get()]);
             System.out.println(decoder.W);
             decoder.Flags();
         }
