@@ -139,11 +139,11 @@ public class Decoder{
                             case 0b01100011:
                                 SLEEP(dBit, fAdr);
 //                                PC.next();                wird der Programmzähler erhöht, was geschieht bei dem Befehl
+                                PC.next();
                             default:
                                 MOVWF(dBit, fAdr);
                                 PC.next();
                         }
-                        
                         break;
                     case 0b001101:
                         RLF(dBit, fAdr);
@@ -190,18 +190,23 @@ public class Decoder{
     public int ADDLW(int k) {
         W += k;
         W %= 256;
+        Datenspeicher.CFlag(W, k);
+        Datenspeicher.DCFlag(W, k);
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
     public int ANDLW(int k){
         W &= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
     public int IORLW(int k){
         W |= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
@@ -238,6 +243,7 @@ public class Decoder{
     public int XORLW(int k){
         W ^= k;
         W %= 256;
+        Datenspeicher.ZFlag(W);
         return W;
     }
 
@@ -262,14 +268,16 @@ public class Decoder{
     //control operations
     public void CALL(int k){
         Stack.push(PC.next());
-        PC.jump(k);
+        int jumpaddress = ((Datenspeicher.PullDataFromRegister(10) >> 3) << 11) | k; 
+        PC.jump(jumpaddress);
     }
 
     public void GOTO(int k){
-        PC.jump(k);
+        int jumpaddress = ((Datenspeicher.PullDataFromRegister(10) >> 3) << 11) | k; 
+        PC.jump(jumpaddress);
     }
 
-//case 0b00:
+//case 0b00 (byte operations):
     public void ADDWF(int dBit, int fAdr) {    //C, DC, ZFlag werden manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         if(dBit == 0){
@@ -278,15 +286,20 @@ public class Decoder{
         else{
             Datenspeicher.PushDataToRegister(fAdr, W + Datenspeicher.PullDataFromRegister(fAdr));
         }
+        Datenspeicher.CFlag(W, save);
+        Datenspeicher.DCFlag(W, save);
+        Datenspeicher.ZFlag(W);
     }
 
     public void ANDWF(int dBit, int fAdr) { //ZFlag wird maniuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
        if(dBit == 0){
             W = W & save;
+            Datenspeicher.ZFlag(W);
        }
        else{
-        Datenspeicher.PushDataToRegister(fAdr, W & save);
+            Datenspeicher.PushDataToRegister(fAdr, W & save);
+            Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
        }
     }
 
@@ -296,9 +309,11 @@ public class Decoder{
 
        if(dBit == 0){
             W = mask ^ save;
+            Datenspeicher.ZFlag(W);
        }
        else{
             Datenspeicher.PushDataToRegister(fAdr, mask ^ save);
+            Datenspeicher.ZFlag(fAdr);
        }
     }
     
@@ -308,9 +323,11 @@ public class Decoder{
  
         if(dBit == 0){
              W = save;
+             Datenspeicher.ZFlag(W);
         }
         else{
              Datenspeicher.PushDataToRegister(fAdr, save);
+             Datenspeicher.ZFlag(fAdr);
         }
      }
 
@@ -336,9 +353,11 @@ public class Decoder{
 
         if(dBit == 0){
              W = save;
+             Datenspeicher.ZFlag(W);
         }
         else{
              Datenspeicher.PushDataToRegister(fAdr, save);
+             Datenspeicher.ZFlag(fAdr);
         }
     }
 
@@ -362,10 +381,12 @@ public class Decoder{
 
         if(dBit == 0){
             W = W | save;
+            Datenspeicher.ZFlag(W);
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, W | save);
-           }
+            Datenspeicher.ZFlag(fAdr);
+        }
     }
     
     public void MOVF(int dBit, int fAdr) {      //Z-Flag wird manipuliert
@@ -373,11 +394,11 @@ public class Decoder{
 
        if(dBit == 0){
             W = save;
-            W = save;  
        }
        else{
             Datenspeicher.PushDataToRegister(fAdr, save);       
        }
+       Datenspeicher.ZFlag(fAdr);
 
     }
 
@@ -431,8 +452,18 @@ public class Decoder{
 
     public void SUBWF(int dBit, int fAdr) { //C, DC, ZFlag werden manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
-//    	    CFlag(W, save);                                                         Flags muessen noch erledigt werden
-//            DCFlag(W, save);
+
+        if (W >= 0){
+            Datenspeicher.set1(3, 0);
+        } else {
+            Datenspeicher.set0(3, 0);
+        }
+        int DCW = W & 0xF;
+        if (DCW >= 0){
+            Datenspeicher.set1(3, 1);
+        }else {
+            Datenspeicher.set0(3, 1);
+        }
 
         if(dBit == 0){
             W = save - W;           
@@ -460,23 +491,27 @@ public class Decoder{
         }
        
     }
-    public void XORWF(int dBit, int fAdr) { //Keine Flag wird manipuliert
+    public void XORWF(int dBit, int fAdr) { //ZFlag
         int save = Datenspeicher.PullDataFromRegister(fAdr);
 
         if(dBit == 0){
             W = W ^ save;
+            Datenspeicher.ZFlag(W);
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, W ^ save);
+            Datenspeicher.ZFlag(fAdr);
            }
     }
 
     public void CLRF (int dBit, int fAdr) { //ZFlag wird manipuliert
         Datenspeicher.PushDataToRegister(fAdr, 0);
+        Datenspeicher.ZFlag(fAdr);
     }
 
     public void CLRW (int dBit, int fAdr) { //ZFlag wird manipuliert
         W = 0;
+        Datenspeicher.ZFlag(W);
     }
 
     public void CLRWDT (int dBit, int fAdr) {   //|TO und|PD wird manipuliert

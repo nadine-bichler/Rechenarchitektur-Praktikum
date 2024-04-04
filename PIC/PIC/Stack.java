@@ -14,6 +14,9 @@ public class Stack {
 	 * is removed and the others slide down to create space
 	 */
 	public static void push(int element){
+		if (currentSize == 8){
+			currentSize = 0;
+		}
 		elements[currentSize] = element;
 		currentSize += 1;
 	}
@@ -23,13 +26,16 @@ public class Stack {
 	 */
 	public static int pop(){
 		currentSize -= 1;
-		return elements[currentSize] = 0;
+		if (currentSize == -1){
+			currentSize = 7;
+		}
+		return elements[currentSize];
 	}
 
 	/**
 	 * returns the element on top of the stack if the stack is filled
 	 */
 	public static int top(){
-		return elements[currentSize - 1];
+		return elements[currentSize];
 	}
 }
