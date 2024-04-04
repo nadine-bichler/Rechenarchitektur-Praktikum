@@ -89,8 +89,14 @@ public class Decoder{
                         ANDWF(dBit, fAdr);
                         pc.next();
                         break;
-                    case 0b000001:
-                        //CRLF oder CRLW
+                    case 0b000001:      //CRLF oder CRLW
+                        switch(bcode & 0xFF){
+                            case 0b00000000:
+                                CLRW(dBit, fAdr);
+                            default:
+                                CLRF(dBit, fAdr);
+                        }
+                        
                         break;
                     case 0b001001:
                         COMF(dBit, fAdr);
@@ -120,16 +126,22 @@ public class Decoder{
                         MOVF(dBit, fAdr);
                         pc.next();
                         break;
-                    case 0b000000:
+                    case 0b000000:      //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         switch(bcode & 0xFF){
-                            case 0b0:
-                            NOP();
+                            case 0b00000000:
+                                NOP(dBit, fAdr);
                             case 0b01100100:
-                            CLRWDT();
-                            case 0b1001:
-                            RETFIE();
+                                CLRWDT(dBit, fAdr);
+                            case 0b00001001:
+                                RETFIE(dBit, fAdr);
+                            case 0b00001000:
+                                RETURN(dBit, fAdr);
+                            case 0b01100011:
+                                SLEEP(dBit, fAdr);
+                            default:
+                                MOVWF(dBit, fAdr);
                         }
-                        //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
+                        
                         break;
                     case 0b001101:
                         RLF(dBit, fAdr);
@@ -464,6 +476,38 @@ public class Decoder{
         else{
             datenspeicher.PushDataToRegister(fAdr, W ^ save);
            }
+    }
+
+    public void CLRF (int dBit, int fAdr) {
+        datenspeicher.PushDataToRegister(fAdr, 0);
+    }
+
+    public void CLRW (int dBit, int fAdr) {
+        W = 0;
+    }
+
+    public void CLRWDT (int dBit, int fAdr) {
+//      WDT = 0;        
+    }
+
+    public void RETFIE (int dBit, int fAdr) {
+
+    }
+
+    public void RETURN (int dBit, int fAdr) {
+        
+    }
+
+    public void SLEEP (int dBit, int fAdr) {
+        
+    }
+
+    public void MOVWF (int dBit, int fAdr) {
+        datenspeicher.PushDataToRegister(fAdr, W);
+    }
+
+    public void NOP (int dBit, int fAdr) {
+        
     }
 
 
