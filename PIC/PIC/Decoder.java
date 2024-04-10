@@ -125,21 +125,26 @@ public class Decoder{
                             case 0b00000000:
                                 NOP(dBit, fAdr);
                                 PC.next();
+                                break;
                             case 0b01100100:
                                 CLRWDT(dBit, fAdr);
                                 PC.next();
+                                break;
                             case 0b00001001:
                                 RETFIE(dBit, fAdr);
                                 PC.next();
+                                break;
                             case 0b00001000:
                                 RETURN(dBit, fAdr);
-                                PC.next();
+                                break;
                             case 0b01100011:
                                 SLEEP(dBit, fAdr);
                                 PC.next();
+                                break;
                             default:
                                 MOVWF(dBit, fAdr);
                                 PC.next();
+                                break;
                         }
                         break;
                     case 0b001101:
@@ -171,11 +176,9 @@ public class Decoder{
                 switch(bcode >> 11){
                     case 0b100:
                         CALL(k);
-                        PC.next();
                         break;
                     case 0b101:
                         GOTO(k);
-                        PC.next();
                         break;
                 }
 
@@ -518,6 +521,6 @@ public class Decoder{
     }
 
     public void NOP (int dBit, int fAdr) {  //Keine Flags werden manipuliert
-        
+        return;
     }
 }

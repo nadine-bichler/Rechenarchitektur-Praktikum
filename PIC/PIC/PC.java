@@ -8,16 +8,19 @@ public class PC {
     }
 
     public static int next(){
-        pc += 1;
+        pc++;
+        //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
-        Datenspeicher.PushDataToRegister(10, ((pc & 0x1F00) >> 8));
+        //PCLATH
+        Datenspeicher.PushDataToRegister(10, (0));
         return pc;
     }
 
-    public static int jump (int spot){
+    public static void jump (int spot){
         pc = spot;
+        //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
-        Datenspeicher.PushDataToRegister(10, ((pc & 0x1F00) >> 8));
-        return pc;
+        //PCLATH
+        Datenspeicher.PushDataToRegister(10, (0));
     }
 }
