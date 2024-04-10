@@ -39,7 +39,7 @@ public class ReadFile {
             }
         
         //Test ob richtig in Array gespeichert
-        while(ROM[PC.get()] != 0){
+        while(true){
             decoder.execute(ROM[PC.get()]);
             System.out.println(decoder.W);
             Datenspeicher.Flags();

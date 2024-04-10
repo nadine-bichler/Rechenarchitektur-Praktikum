@@ -33,7 +33,6 @@ public class Decoder{
                         break;
                     case 0b110100:
                         RETLW(k);
-                        PC.next();
                         break;
                     case 0b111100:
                         SUBLW(k);
@@ -221,7 +220,8 @@ public class Decoder{
 
     //später
     public void RETLW(int k){
-        
+        W = k;
+        PC.jump(Stack.pop());
     }
 
     public int SUBLW(int k){
