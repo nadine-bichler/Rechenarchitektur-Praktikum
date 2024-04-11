@@ -253,19 +253,45 @@ public class Decoder{
 
     //bit-oriented operations
     public void BCF(int bit, int fAdr){
-
+        int save = Datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0b1 << bit;
+        save = save | mask;
+        Datenspeicher.PushDataToRegister(fAdr, save);
+        
     }
 
     public void BSF(int bit, int fAdr){
-
+        int save = Datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0b1 << bit;
+        int mask2 = mask ^ 0b0;
+        save = save & mask2;
+        Datenspeicher.PushDataToRegister(fAdr, save);
     }
 
     public void BTFSC(int bit, int fAdr){
+        int save = Datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0b1 << bit;
+        save = save & mask;
 
+        if(save == 0){
+            PC.jump(PC.next() + 1);     //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
+        }
+        else{                           //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
+            PC.next();
+        }
     }
 
     public void BTFSS(int bit, int fAdr){
+        int save = Datenspeicher.PullDataFromRegister(fAdr);
+        int mask = 0b1 << bit;
+        save = save & mask;
 
+        if(save == 0){
+            PC.next();                  //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
+        }
+        else{                           
+            PC.jump(PC.next() + 1);     //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
+        }
     }
 
     //control operations
