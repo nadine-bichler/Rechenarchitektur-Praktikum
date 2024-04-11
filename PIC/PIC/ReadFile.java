@@ -17,7 +17,7 @@ public class ReadFile {
         int x = 0;
         try {
 
-            FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim4.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
+            FileReader fileReader = new FileReader("C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim5.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
     
             //
@@ -41,7 +41,10 @@ public class ReadFile {
         //Test ob richtig in Array gespeichert
         while(true){
             decoder.execute(ROM[PC.get()]);
-            System.out.println(decoder.W);
+            System.out.println("W-Register: " + decoder.W);
+            System.out.println("wert1: " + Datenspeicher.PullDataFromRegister(12));
+            System.out.println("wert2: " + Datenspeicher.PullDataFromRegister(13));
+            System.out.println("ergebnis: " + Datenspeicher.PullDataFromRegister(14));
             Datenspeicher.Flags();
         }
     }
