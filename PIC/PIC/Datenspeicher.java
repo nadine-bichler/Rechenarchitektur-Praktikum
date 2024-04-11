@@ -113,7 +113,7 @@ public class Datenspeicher {
     public static void DCFlag (int output, int k){
         output &= 0xF;
         k &= 0xF;
-        if (output + k >= 16){
+        if (output + k > 15){
             set1(3, 1);
         }else {
             set0(3, 1);
@@ -122,7 +122,7 @@ public class Datenspeicher {
 
     public static void CFlag (int output, int k){
         output &= 0xFF;
-        if (output + k >= 256){
+        if (output + k > 255){
             set1(3, 0);
         }else {
             set0(3, 0);
