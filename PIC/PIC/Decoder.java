@@ -241,6 +241,7 @@ public class Decoder{
         }else {
             Datenspeicher.set0(3, 1);
         }
+        //ZFlag
         Datenspeicher.ZFlag(W);
     }
 
