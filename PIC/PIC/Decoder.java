@@ -326,6 +326,7 @@ public class Decoder{
     public void DECF(int dBit, int fAdr) {      //ZFlag wird manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         save = save - 1;
+        save %= 256;
  
         if(dBit == 0){
              W = save;
@@ -341,6 +342,7 @@ public class Decoder{
     public void DECFSZ(int dBit, int fAdr) {    //Keine Flag wird manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         save = save - 1 ;
+        save %= 256;
 
         if(dBit == 0){
             W = save;
@@ -358,6 +360,7 @@ public class Decoder{
     public void INCF(int dBit, int fAdr) {      //Z-Flag wird manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         save = save + 1;
+        save %= 256;
 
         if(dBit == 0){
              W = save;
@@ -373,6 +376,7 @@ public class Decoder{
     public void INCFSZ(int dBit, int fAdr) {    //Keine Flag wird manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         save = save + 1 ;
+        save %= 256;
 
         if(dBit == 0){
             W = save;
