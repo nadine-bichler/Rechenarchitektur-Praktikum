@@ -42,7 +42,6 @@ public class ReadFile {
         while(true){
             decoder.execute(ROM[PC.get()]);
             System.out.println(decoder.W);
-            System.out.println(Datenspeicher.PullDataFromRegister(x));
             Datenspeicher.Flags();
         }
     }
