@@ -287,7 +287,8 @@ public class Decoder{
             W = W + save;           
         }
         else{
-            Datenspeicher.PushDataToRegister(fAdr, W + Datenspeicher.PullDataFromRegister(fAdr));
+            Datenspeicher.PushDataToRegister(fAdr, W + save);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
         Datenspeicher.CFlag(W, save);
         Datenspeicher.DCFlag(W, save);
@@ -303,6 +304,7 @@ public class Decoder{
        else{
             Datenspeicher.PushDataToRegister(fAdr, W & save);
             Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
     }
 
@@ -316,7 +318,8 @@ public class Decoder{
        }
        else{
             Datenspeicher.PushDataToRegister(fAdr, mask ^ save);
-            Datenspeicher.ZFlag(fAdr);
+            Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
     }
     
@@ -330,7 +333,8 @@ public class Decoder{
         }
         else{
              Datenspeicher.PushDataToRegister(fAdr, save);
-             Datenspeicher.ZFlag(fAdr);
+             Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+             System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
      }
 
@@ -346,6 +350,7 @@ public class Decoder{
        }
             else{
                 Datenspeicher.PushDataToRegister(fAdr, save);
+                System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
        
     }
@@ -360,7 +365,8 @@ public class Decoder{
         }
         else{
              Datenspeicher.PushDataToRegister(fAdr, save);
-             Datenspeicher.ZFlag(fAdr);
+             Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+             System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
@@ -376,6 +382,7 @@ public class Decoder{
        }
        else{
             Datenspeicher.PushDataToRegister(fAdr, save);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
     }
 
@@ -388,7 +395,8 @@ public class Decoder{
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, W | save);
-            Datenspeicher.ZFlag(fAdr);
+            Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
     }
     
@@ -399,7 +407,8 @@ public class Decoder{
             W = save;
        }
        else{
-            Datenspeicher.PushDataToRegister(fAdr, save);       
+            Datenspeicher.PushDataToRegister(fAdr, save);   
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));    
        }
        Datenspeicher.ZFlag(fAdr);
 
@@ -412,7 +421,7 @@ public class Decoder{
         int storage1 = Datenspeicher.get(3, 0);
 
         if(storage == 0){
-            Datenspeicher.set1(3, 0);
+            Datenspeicher.set0(3, 0);
         }
         else{
             Datenspeicher.set1(3, 0);
@@ -426,6 +435,7 @@ public class Decoder{
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, save);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
@@ -450,6 +460,7 @@ public class Decoder{
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, save);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
@@ -473,6 +484,7 @@ public class Decoder{
         }
         else{  
             Datenspeicher.PushDataToRegister(fAdr, save - W);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
     }
 
@@ -491,6 +503,8 @@ public class Decoder{
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, storage2 ^ storage1);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
+
         }
        
     }
@@ -503,13 +517,15 @@ public class Decoder{
         }
         else{
             Datenspeicher.PushDataToRegister(fAdr, W ^ save);
-            Datenspeicher.ZFlag(fAdr);
+            Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
            }
     }
 
     public void CLRF (int dBit, int fAdr) { //ZFlag wird manipuliert
         Datenspeicher.PushDataToRegister(fAdr, 0);
-        Datenspeicher.ZFlag(fAdr);
+        Datenspeicher.ZFlag(Datenspeicher.PullDataFromRegister(fAdr));
+        System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
     }
 
     public void CLRW (int dBit, int fAdr) { //ZFlag wird manipuliert
@@ -535,6 +551,7 @@ public class Decoder{
 
     public void MOVWF (int dBit, int fAdr) {    //Keine Flags werden manipuliert
         Datenspeicher.PushDataToRegister(fAdr, W);
+        System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
     }
 
     public void NOP (int dBit, int fAdr) {  //Keine Flags werden manipuliert

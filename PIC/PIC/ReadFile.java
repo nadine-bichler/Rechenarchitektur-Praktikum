@@ -17,7 +17,7 @@ public class ReadFile {
         int x = 0;
         try {
 
-            FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim2.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
+            FileReader fileReader = new FileReader("C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim3.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
     
             //
@@ -42,6 +42,7 @@ public class ReadFile {
         while(true){
             decoder.execute(ROM[PC.get()]);
             System.out.println(decoder.W);
+            System.out.println(Datenspeicher.PullDataFromRegister(x));
             Datenspeicher.Flags();
         }
     }
