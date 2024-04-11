@@ -87,11 +87,11 @@ public class Decoder{
                             case 0b00000000:
                                 CLRW(dBit, fAdr);
                                 PC.next();
+                                break;
                             default:
                                 CLRF(dBit, fAdr);
                                 PC.next();
                         }
-                        
                         break;
                     case 0b001001:
                         COMF(dBit, fAdr);
@@ -478,7 +478,7 @@ public class Decoder{
     public void SUBWF(int dBit, int fAdr) { //C, DC, ZFlag werden manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
 
-        //Flags
+        //Carry
         int result = save - W;
 
         if (result >= 0){
@@ -487,6 +487,7 @@ public class Decoder{
             Datenspeicher.set0(3, 0);
         }
 
+        //DC Carry
         int DCsave = save & 0xF;
         int DCW = W & 0xF;
         int DC = DCsave - DCW;
@@ -496,6 +497,9 @@ public class Decoder{
         }else {
             Datenspeicher.set0(3, 1);
         }
+
+        //Z Flag
+        Datenspeicher.ZFlag(result);
 
         //Ergebnis
         if (result < 0){
