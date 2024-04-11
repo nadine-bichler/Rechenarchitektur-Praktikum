@@ -344,6 +344,9 @@ public class Decoder{
     public void ADDWF(int dBit, int fAdr) {    //C, DC, ZFlag werden manipuliert
         int save = Datenspeicher.PullDataFromRegister(fAdr);
 
+        Datenspeicher.CFlag(W, save);
+        Datenspeicher.DCFlag(W, save);
+
         int result = W + save;
         result %= 256;
         if(dBit == 0){
@@ -353,8 +356,6 @@ public class Decoder{
             Datenspeicher.PushDataToRegister(fAdr, result);
             System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
         }
-        Datenspeicher.CFlag(W, save);
-        Datenspeicher.DCFlag(W, save);
         Datenspeicher.ZFlag(W);
     }
 
@@ -409,17 +410,15 @@ public class Decoder{
         save--;
         if (save < 0){
             save += 256;
+        }else if(save == 0){
+            PC.jump(PC.next());
         }
 
         if(dBit == 0){
             W = save;
-            if(W == 0){
-                PC.jump(PC.next());
-            }
-       }
-            else{
-                Datenspeicher.PushDataToRegister(fAdr, save);
-                System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
+       }else{
+            Datenspeicher.PushDataToRegister(fAdr, save);
+            System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
        
     }
@@ -444,12 +443,12 @@ public class Decoder{
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         save++;
         save %= 256;
+        if(save == 0){
+            PC.jump(PC.next());
+        }
 
         if(dBit == 0){
             W = save;
-            if(W == 0){
-                PC.jump(PC.next());
-            }
        }
        else{
             Datenspeicher.PushDataToRegister(fAdr, save);
