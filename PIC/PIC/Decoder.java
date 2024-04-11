@@ -16,29 +16,36 @@ public class Decoder{
 
                 switch (bcode >> 8){
                     case 0b111110:
+                        System.out.println("ADDLW");
                         ADDLW(k);
                         PC.next();
                         break;
                     case 0b111001:
+                        System.out.println("ANDLW");
                         ANDLW(k);
                         PC.next();
                         break;
                     case 0b111000:
+                        System.out.println("IORLW");
                         IORLW(k);
                         PC.next();
                         break;
                     case 0b110000:
+                        System.out.println("MOVLW");
                         MOVLW(k);
                         PC.next();
                         break;
                     case 0b110100:
+                        System.out.println("RETLW");
                         RETLW(k);
                         break;
                     case 0b111100:
+                        System.out.println("SUBLW");
                         SUBLW(k);
                         PC.next();
                         break;
                     case 0b111010:
+                        System.out.println("XORLW");
                         XORLW(k);
                         PC.next();
                         break;
@@ -52,18 +59,22 @@ public class Decoder{
 
                 switch(bcode >> 10){
                     case 0b0100:
+                        System.out.println("BCF");
                         BCF(bit, fAdr);
                         PC.next();
                         break;
                     case 0b0101:
                         BSF(bit, fAdr);
+                        System.out.println("BSF");
                         PC.next();
                         break;
                     case 0b0110:
+                        System.out.println("BTFSC");
                         BTFSC(bit, fAdr);
                         PC.next();
                         break;
                     case 0b0111:
+                        System.out.println("BTFSS");
                         BTFSS(bit, fAdr);
                         PC.next();
                         break;
@@ -75,97 +86,119 @@ public class Decoder{
 
                 switch (bcode >> 8){
                     case 0b000111:
+                        System.out.println("ADDWF");
                         ADDWF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000101:
+                        System.out.println("ANDWF");
                         ANDWF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000001:      //CRLF oder CRLW
                         switch(bcode & 0xFF){
                             case 0b00000000:
+                                System.out.println("CLRW");
                                 CLRW(dBit, fAdr);
                                 PC.next();
                                 break;
                             default:
+                                System.out.println("CRLF");
                                 CLRF(dBit, fAdr);
                                 PC.next();
                         }
                         break;
                     case 0b001001:
+                        System.out.println("COMF");
                         COMF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000011:
+                        System.out.println("DECF");
                         DECF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001011:
+                        System.out.println("DECFSZ");
                         DECFSZ(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001010:
+                        System.out.println("INCF");
                         INCF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001111:
+                        System.out.println("INCFSZ");
                         INCFSZ(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000100:
+                        System.out.println("IORWF");
                         IORWF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001000:
+                        System.out.println("MOVF");
                         MOVF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000000:      //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         switch(bcode & 0xFF){
                             case 0b00000000:
+                                System.out.println("NOP");
                                 NOP(dBit, fAdr);
                                 PC.next();
                                 break;
                             case 0b01100100:
+                                System.out.println("CLRWDT");
                                 CLRWDT(dBit, fAdr);
                                 PC.next();
                                 break;
                             case 0b00001001:
+                                System.out.println("RETFIE");
                                 RETFIE(dBit, fAdr);
                                 PC.next();
                                 break;
                             case 0b00001000:
+                                System.out.println("RETURN");
                                 RETURN(dBit, fAdr);
                                 break;
                             case 0b01100011:
+                                System.out.println("SLEEP");
                                 SLEEP(dBit, fAdr);
 //                                PC.next();                wird der Programmzähler erhöht, was geschieht bei dem Befehl
                                 PC.next();
                                 break;
                             default:
+                                System.out.println("MOVWF");
                                 MOVWF(dBit, fAdr);
                                 PC.next();
                                 break;
                         }
                         break;
                     case 0b001101:
+                        System.out.println("RLF");
                         RLF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001100:
+                        System.out.println("RRF");
                         RRF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000010:
+                        System.out.println("SUBWF");
                         SUBWF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b001110:
+                        System.out.println("SWAPF");
                         SWAPF(dBit, fAdr);
                         PC.next();
                         break;
                     case 0b000110:
+                        System.out.println("XORWF");
                         XORWF(dBit, fAdr);
                         PC.next();
                         break;
