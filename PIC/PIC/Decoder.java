@@ -328,17 +328,17 @@ public class Decoder{
     //bit-oriented operations
     public void BCF(int bit, int fAdr){
         int save = Datenspeicher.PullDataFromRegister(fAdr);
-        int mask = 0b1 << bit;
-        save = save | mask;
+        int mask = ~(0b1 << bit);
+
+        save = save & mask;
         Datenspeicher.PushDataToRegister(fAdr, save);
         
     }
 
-    public void BSF(int bit, int fAdr){
+    public void BSF(int bit, int fAdr){   
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         int mask = 0b1 << bit;
-        int mask2 = mask ^ 0b0;
-        save = save & mask2;
+        save = save | mask;
         Datenspeicher.PushDataToRegister(fAdr, save);
     }
 
@@ -360,14 +360,14 @@ public class Decoder{
         int mask = 0b1 << bit;
         save = save & mask;
 
-        if(save == 0){
+        if(save == mask){
             PC.next();                  //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
         }
         else{    
             NOP(bit, fAdr);         //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
         }
     }
-
+    
     //control operations
     public void CALL(int k){
         Stack.push(PC.next());
