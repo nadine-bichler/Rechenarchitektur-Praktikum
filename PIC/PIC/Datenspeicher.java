@@ -3,6 +3,8 @@ public class Datenspeicher {
 
     private static int[] bank0 = new int[128];  
     private static int[] bank1 = new int[128];
+
+    private static int WDT = 128;
     
     
     static {
@@ -11,14 +13,16 @@ public class Datenspeicher {
             bank1[i] = 0;
         }
             
-        bank1[5] = 255;     //Tris-Register auf 0xFF
-        bank1[6] = 255;
+        bank1[5] = 0x1F;    //Tris A
+        bank1[6] = 0xFF;    //Tris B
     
-        bank0[11] = 255;    //Intcon-Register auf 0xFF
+        bank0[11] = 255;    //Intcon-Register auf 0xFF  //?
         bank1[11] = 255;    
             
-        bank0[3] = 24;      //Status-Register auf 0x18
-        bank1[3] = 24;
+        bank0[3] = 0x18;    //Status-Register
+        bank1[3] = 0x18;
+
+        bank1[1] = 0xFF;    //Option-Register
     }
 
 
@@ -131,5 +135,19 @@ public class Datenspeicher {
 
     public static void Flags(){
         System.out.println("C: " + get(3, 0) +" DC: " + get(3, 1) + " Z: " + get(3, 2));
+    }
+
+    public static void Timer(){
+        int T0CS = (bank1[1] & 0b100000) >> 5;
+        int PSA = (bank1[1] & 0b1000) >> 3;
+        int RA4 = (bank0[5] & 0b10000) >> 4;
+        
+        if (PSA == 1){
+            if(T0CS == 0){
+                bank0[1] += 1;
+            }else if(T0CS == 1 && RA4 == 1){
+                bank0[1] += 1;
+            }
+        }
     }
 }

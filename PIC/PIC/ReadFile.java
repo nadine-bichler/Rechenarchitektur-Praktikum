@@ -8,7 +8,7 @@ public class ReadFile {
     public static void main(String[] args){
 
         //Programmspeicher
-        int ROM [] = new int[1024];
+        int ROM[] = new int[1024];
 
         //CALL & GOTO auch in Programmspeicher?
 
