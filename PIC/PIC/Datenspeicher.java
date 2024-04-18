@@ -68,15 +68,31 @@ public class Datenspeicher {
     }
     
     public static int whichBank() {
-        if((bank0[3] & 0b100000) == 0) {
-            return 0;
-        }else {
-            return 1;
+        if((Decoder.isIndirect) == true) {
+            int content = bank0[4];
+            int seventhBit = content >> 7;
+            
+            if(seventhBit == 0) {
+                return 10;
+            }
+            else {
+                return 11;
+            }
         }
+        
+        else {
+            if((bank0[3] & 0b100000) == 0) {
+                return 0;
+            }else {
+                return 1;
+            }
+        
+        
+        }//zusatzbedingung für isIndirect Parameter
     }
    
     public static void PushDataToRegister(int Register, int Ergebnis) {   //Port und Tris syncen ?
-        if(whichBank() == 0) {
+        if(whichBank() == 0 || whichBank() == 10) {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
                 bank0[Register] = Ergebnis;
                 bank1[Register] = Ergebnis;

@@ -3,10 +3,16 @@ public class Decoder{
 
     //Working Register
     int W = 0;
+    static boolean isIndirect = false;
 
     public void execute (int bcode){
 
         int fAdr = bcode & 0x7F;
+
+        if(fAdr == 0){
+            fAdr = Datenspeicher.PullDataFromRegister(4);
+            isIndirect = true;
+        }
     
         switch (bcode >> 12){
             //Literal operations
