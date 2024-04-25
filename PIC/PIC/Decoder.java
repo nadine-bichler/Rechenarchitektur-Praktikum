@@ -3,10 +3,16 @@ public class Decoder{
 
     //Working Register
     int W = 0;
+    static boolean isIndirect = false;
 
     public void execute (int bcode){
 
         int fAdr = bcode & 0x7F;
+
+        if(fAdr == 0){
+            fAdr = Datenspeicher.PullDataFromRegister(4);
+            isIndirect = true;
+        }
     
         switch (bcode >> 12){
             //Literal operations
@@ -560,7 +566,7 @@ public class Decoder{
         int storage1 = (Datenspeicher.get(3, 0)) << 7;
 
         if(storage == 0){
-            Datenspeicher.set1(3, 0);
+            Datenspeicher.set0(3, 0);
         }
         else{
             Datenspeicher.set1(3, 0);
