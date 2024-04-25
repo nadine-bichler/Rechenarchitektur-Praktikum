@@ -562,7 +562,7 @@ public class Decoder{
         int storage1 = (Datenspeicher.get(3, 0)) << 7;
 
         if(storage == 0){
-            Datenspeicher.set1(3, 0);
+            Datenspeicher.set0(3, 0);
         }
         else{
             Datenspeicher.set1(3, 0);
