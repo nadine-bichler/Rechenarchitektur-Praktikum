@@ -37,7 +37,7 @@ public class Decoder{
                         System.out.println("MOVLW");
                         MOVLW(k);
                         PC.next();
-                        Datenspeicher.Timer();
+                        //Datenspeicher.Timer();
                         break;
                     case 0b110100:
                         System.out.println("RETLW");
@@ -349,6 +349,7 @@ public class Decoder{
 
         if(save == 0){
             NOP(bit, fAdr);     //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
+            PC.next();
         }
         else{                           //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
             PC.next();
@@ -365,6 +366,7 @@ public class Decoder{
         }
         else{    
             NOP(bit, fAdr);         //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
+            PC.next();
         }
     }
     
@@ -452,6 +454,7 @@ public class Decoder{
             save += 256;
         }else if(save == 0){
             NOP(dBit, fAdr);
+            PC.next();
         }
 
         if(dBit == 0){
@@ -485,6 +488,7 @@ public class Decoder{
         save %= 256;
         if(save == 0){
             NOP(dBit, fAdr);
+            PC.next();
         }
 
         if(dBit == 0){

@@ -9,6 +9,9 @@ public class PC {
 
     public static int next(){
         pc++;
+        if (pc > 1024 ){
+            pc = 0;
+        }
         //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
         //PCLATH

@@ -4,8 +4,12 @@ public class Datenspeicher {
     private static int[] bank0 = new int[128];  
     private static int[] bank1 = new int[128];
 
+    //Watchdog
     private static int WDT = 128;
-    
+
+    //Timer
+    final private static int Teilerfaktor = Math.pow(2, (bank1[1] & 0b111));
+    final private static int prescaler = Teilerfaktor;
     
     static {
         for(int i = 0; i < bank0.length; i++) {     //Alle Register auf 0 setzen
@@ -141,13 +145,26 @@ public class Datenspeicher {
         int T0CS = (bank1[1] & 0b100000) >> 5;
         int PSA = (bank1[1] & 0b1000) >> 3;
         int RA4 = (bank0[5] & 0b10000) >> 4;
-        
-        if (PSA == 1){
-            if(T0CS == 0){
-                bank0[1] += 1;
-            }else if(T0CS == 1 && RA4 == 1){
-                bank0[1] += 1;
+        int TMR0 = PullDataFromRegister(1);
+
+        if (T0CS == 0){
+            if(PSA == 0){
+                prescaler--;
+            }else{
+                bank0[1]++;
             }
+        }else{
+            if(PSA == 0){
+                prescaler--;
+            }else{
+                bank0[1]++;
+            }
+            prescaler --;
+        }
+
+        if (prescaler <= 0){
+            set1(11, 2);
+            prescaler = Teilerfaktor;
         }
     }
 }
