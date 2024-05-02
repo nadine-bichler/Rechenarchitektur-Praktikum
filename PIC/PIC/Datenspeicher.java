@@ -6,10 +6,6 @@ public class Datenspeicher {
 
     //Watchdog
     private static int WDT = 128;
-
-    //Timer
-    final private static int Teilerfaktor = Math.pow(2, (bank1[1] & 0b111));
-    final private static int prescaler = Teilerfaktor;
     
     static {
         for(int i = 0; i < bank0.length; i++) {     //Alle Register auf 0 setzen
@@ -29,6 +25,9 @@ public class Datenspeicher {
         bank1[1] = 0xFF;    //Option-Register
     }
 
+    public static int PS2 = bank1[1] & 0b111;
+    public static int Teilerfaktor = (int)Math.pow(2.0, (double)(PS2 + 1));
+    public static int prescaler = Teilerfaktor;
 
     public static int get (int register,int k){
         int mask = 0b1 << k;
@@ -45,7 +44,7 @@ public class Datenspeicher {
     public static void set1(int register,int k){
         if (get(register, k) == 0){
             int mask = 0b1 << k;
-            if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 79))) {
+            if((register == 0) || (register == 2) || (register == 3) || (register == 4) || (register == 10) || (register == 11) || ((register >= 12) && (register <= 127))) {
                 bank0[register] |= mask;
                 bank1[register] |= mask;
             } else if (whichBank() == 0){
@@ -72,7 +71,7 @@ public class Datenspeicher {
     }
     
     public static int whichBank() {
-        if((Decoder.isIndirect) == true) {
+        if(Decoder.isIndirect) {
             int content = bank0[4];
             int seventhBit = content >> 7;
             
@@ -125,6 +124,14 @@ public class Datenspeicher {
         }
     }
 
+    public static int getRegister(int bank, int register){
+        if(bank == 0){
+            return bank0[register];
+        }else{
+            return bank1[register];
+        }
+    }
+
     
     public static void ZFlag(int output){
         if (output == 0){
@@ -157,11 +164,25 @@ public class Datenspeicher {
         System.out.println("C: " + get(3, 0) +" DC: " + get(3, 1) + " Z: " + get(3, 2));
     }
 
+    public static void PS2HasChanged(int newPS2){
+        if(PS2 != newPS2){
+            PS2 = newPS2;
+            Teilerfaktor = (int)Math.pow(2.0, (double)(PS2 + 1));
+            prescaler = Teilerfaktor;
+        }
+    }
+
+    public static void overwritingTimer(int fadr){
+        if(whichBank() == 0 & fadr == 1){
+            prescaler = Teilerfaktor;
+        }
+    }
+
     public static void Timer(){
         int T0CS = (bank1[1] & 0b100000) >> 5;
         int PSA = (bank1[1] & 0b1000) >> 3;
-        int RA4 = (bank0[5] & 0b10000) >> 4;
-        int TMR0 = PullDataFromRegister(1);
+
+        PS2HasChanged(bank1[1] & 0b111);
 
         if (T0CS == 0){
             if(PSA == 0){
@@ -170,17 +191,15 @@ public class Datenspeicher {
                 bank0[1]++;
             }
         }else{
-            if(PSA == 0){
+            if(PSA == 0) {
                 prescaler--;
-            }else{
-                bank0[1]++;
             }
-            prescaler --;
         }
 
         if (prescaler <= 0){
             set1(11, 2);
             prescaler = Teilerfaktor;
+            bank0[1]++;
         }
     }
 }
