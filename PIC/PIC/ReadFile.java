@@ -48,6 +48,7 @@ public class ReadFile {
             System.out.println("Teilerfaktor: " + Datenspeicher.Teilerfaktor);
             System.out.println("Bank: " + Datenspeicher.whichBank());
             System.out.println("Register1 Bank0 (Timer): " + Datenspeicher.getRegister(0, 1));
+            System.out.println("Register10 Bank0: " + Datenspeicher.getRegister(0, 0x10));
             System.out.println("W-Register: " + decoder.W);
             //System.out.println("fsr-Register: " + Datenspeicher.PullDataFromRegister(4));
             System.out.println("wert1: " + Datenspeicher.PullDataFromRegister(12));

@@ -201,5 +201,10 @@ public class Datenspeicher {
             prescaler = Teilerfaktor;
             bank0[1]++;
         }
+
+        if(bank0[1] >= 0xFF){
+            bank0[1] = 1;
+            prescaler = Teilerfaktor;
+        }
     }
 }
