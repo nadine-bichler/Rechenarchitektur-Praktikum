@@ -191,9 +191,7 @@ public class Datenspeicher {
                 bank0[1]++;
             }
         }else{
-            if(PSA == 0) {
-                prescaler--;
-            }
+            prescaler--;
         }
 
         if (prescaler <= 0){
@@ -202,8 +200,8 @@ public class Datenspeicher {
             bank0[1]++;
         }
 
-        if(bank0[1] >= 0xFF){
-            bank0[1] = 1;
+        if(bank0[1] > 0xFF){
+            bank0[1] = 0;
             prescaler = Teilerfaktor;
         }
     }

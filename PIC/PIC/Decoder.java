@@ -414,11 +414,11 @@ public class Decoder{
         int mask = 0b1 << bit;
         save = save & mask;
 
-        if(save == mask){
-            PC.next();                  //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
+        if(save == 0){
+            return;                  //wenn das Bit an Stelle 0 ist soll es den nächsten Befehl ausführen
         }
         else{    
-            NOP(bit, fAdr);         //wenn das Bit an Stelle 0 ist soll es auf den übernächsten Befehl überspringen
+            NOP(bit, fAdr);         //wenn das Bit an Stelle 1 ist soll es auf den übernächsten Befehl überspringen
             PC.next();
         }
     }

@@ -41,18 +41,18 @@ public class ReadFile {
         
         //Test ob richtig in Array gespeichert
 
-        //Wird Timer zurückgesetzt wenn prescaler verändert?
+        //btfss Befehl, wieso fertig wenn timer = 0?
         while(true){
             System.out.println(PC.get());
             decoder.execute(ROM[PC.get()]);
             System.out.println("Teilerfaktor: " + Datenspeicher.Teilerfaktor);
             System.out.println("Bank: " + Datenspeicher.whichBank());
             System.out.println("Register1 Bank0 (Timer): " + Datenspeicher.getRegister(0, 1));
-            System.out.println("Register10 Bank0: " + Datenspeicher.getRegister(0, 0x10));
+            System.out.println("Register16 Bank0: " + Datenspeicher.getRegister(0, 0x10));
             System.out.println("W-Register: " + decoder.W);
             //System.out.println("fsr-Register: " + Datenspeicher.PullDataFromRegister(4));
-            System.out.println("wert1: " + Datenspeicher.PullDataFromRegister(12));
-            System.out.println("wert2: " + Datenspeicher.PullDataFromRegister(13));
+            //System.out.println("wert1: " + Datenspeicher.PullDataFromRegister(12));
+            //System.out.println("wert2: " + Datenspeicher.PullDataFromRegister(13));
             //System.out.println("ergebnis: " + Datenspeicher.PullDataFromRegister(14));
             //System.out.println("F10: " + Datenspeicher.PullDataFromRegister(16));
             //System.out.println("F11: " + Datenspeicher.PullDataFromRegister(17));
