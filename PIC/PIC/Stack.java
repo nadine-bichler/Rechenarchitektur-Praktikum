@@ -22,7 +22,7 @@ public class Stack {
     }
 
     /**
-     * removes the element on top of the stack if the stack is filled
+     * removes the element on top of the stack
      */
     public static int pop(){
         currentSize -= 1;

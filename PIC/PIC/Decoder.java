@@ -721,7 +721,9 @@ public class Decoder{
     }
 
     public void RETFIE (int dBit, int fAdr) {   //Keine Flags werden manipuliert
-        
+        PC.jump(Stack.top());
+        Stack.pop();
+        Datenspeicher.set1(11, 7);
     }
 
     public void RETURN (int dBit, int fAdr) {   //Keine Flags werden manipuliert
