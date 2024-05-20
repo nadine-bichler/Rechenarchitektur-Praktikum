@@ -28,17 +28,29 @@ public class Datenspeicher {
     public static int PS2 = bank1[1] & 0b111;
     public static int Teilerfaktor = (int)Math.pow(2.0, (double)(PS2 + 1));
     public static int prescaler = Teilerfaktor;
+    public static int RB0 = get(0,6,0);
+    public static int RB4to7 = getRegister(0, 6) & 0b11110000;
 
     public static int get (int register,int k){
         int mask = 0b1 << k;
         int result;
         if (whichBank() == 0){
             result = ((bank0[register] & mask) == 0) ? 0 : 1;
-            return result;
         } else{
             result = ((bank1[register] & mask) == 0) ? 0 : 1;
-            return result;
         }
+        return result;
+    }
+
+    private static int get (int bank, int register, int k){
+        int mask = 0b1 << k;
+        int result;
+        if(bank == 0){
+            result = ((bank0[register] & mask) == 0) ? 0 : 1;
+        }else{
+            result = ((bank1[register] & mask) == 0) ? 0 : 1;
+        }
+        return result;
     }
 
     public static void set1(int register,int k){
@@ -203,6 +215,46 @@ public class Datenspeicher {
         if(bank0[1] > 0xFF){
             bank0[1] = 0;
             prescaler = Teilerfaktor;
+        }
+    }
+
+    public static void TMR0Interrupt(){
+        if(get(11, 2) == 1 && get(11, 7) == 1 && get(11, 5) == 1){
+            Stack.push(PC.get());
+            PC.jump(4);
+        }
+    }
+
+    public static void RB0Interrupt(){
+        //RB0(Intcon-reg.) sperrt/öffnet interrupts; ob steigende oder sinkende Flanke(mithilfe Option-Reg -> INTEDG)
+        if(get(11, 7) == 1 && get(11, 4) == 1 && get(11, 1) == 1){
+            Stack.push(PC.get());
+            PC.jump(4);
+        }
+    }
+
+    public static void RBPortChangeInterrupt(){
+        if(get(11, 7) == 1 && get(11, 3) == 1 && get(11, 0) == 1){
+            Stack.push(PC.get());
+            PC.jump(4);
+        }
+    }
+
+    public static void RBPortChange(int newRB0){
+        //falls einer der RBPorts geändert -> RBPort Flag == 1
+        if (RB0 != newRB0){
+            set1(11, 0);
+        }
+    }
+
+    public static void RB0InterruptFlag(int newRB0){
+        //falls INTEDG = 1 -> interrupt bei steigender Flanke; falls INTEDG = 0 -> interrupt bei sinkender Flanke
+        if(RB0 != newRB0) {
+            if(get(1, 1, 6) == 1 && RB0 == 0 && newRB0 == 1){
+                set1(11, 1);
+            }else if(get(1, 1, 6) == 0 && RB0 == 1 && newRB0 == 0){
+                set1(11, 1);
+            }
         }
     }
 }
