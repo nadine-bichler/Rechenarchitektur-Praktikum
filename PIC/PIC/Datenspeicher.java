@@ -15,9 +15,6 @@ public class Datenspeicher {
             
         bank1[5] = 0x1F;    //Tris A
         bank1[6] = 0xFF;    //Tris B
-    
-        bank0[11] = 255;    //Intcon-Register auf 0xFF  //?
-        bank1[11] = 255;    
             
         bank0[3] = 0x18;    //Status-Register
         bank1[3] = 0x18;
@@ -30,6 +27,7 @@ public class Datenspeicher {
     public static int prescaler = Teilerfaktor;
     public static int RB0 = get(0,6,0);
     public static int RB4to7 = getRegister(0, 6) & 0b11110000;
+    public static int RA4 = get(0, 5, 4);
 
     public static int get (int register,int k){
         int mask = 0b1 << k;
@@ -190,6 +188,14 @@ public class Datenspeicher {
         }
     }
 
+    public static void RA4Edge(int newRA4){
+        if(get(1, 1, 4) == 0 && RA4 == 0 && newRA4 == 1){
+            bank0[1]++;
+        } else if (get(1, 1, 4) == 1 && RA4 == 1 && newRA4 == 0) {
+            bank0[1]++;
+        }
+    }
+
     public static void Timer(){
         int T0CS = (bank1[1] & 0b100000) >> 5;
         int PSA = (bank1[1] & 0b1000) >> 3;
@@ -203,7 +209,11 @@ public class Datenspeicher {
                 bank0[1]++;
             }
         }else{
-            prescaler--;
+            if(PSA == 0){
+                prescaler--;
+            }else{
+                RA4Edge(get(0, 5, 4));
+            }
         }
 
         if (prescaler <= 0){
