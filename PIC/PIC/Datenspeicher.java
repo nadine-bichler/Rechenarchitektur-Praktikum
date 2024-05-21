@@ -3,9 +3,6 @@ public class Datenspeicher {
 
     private static int[] bank0 = new int[128];  
     private static int[] bank1 = new int[128];
-
-    //Watchdog
-    private static int WDT = 128;
     
     static {
         for(int i = 0; i < bank0.length; i++) {     //Alle Register auf 0 setzen
@@ -217,21 +214,28 @@ public class Datenspeicher {
         }
 
         if (prescaler <= 0){
-            set1(11, 2);
             prescaler = Teilerfaktor;
             bank0[1]++;
         }
 
         if(bank0[1] > 0xFF){
+            set1(11, 2);
             bank0[1] = 0;
             prescaler = Teilerfaktor;
         }
+    }
+
+    public static void Interrupts(){
+        TMR0Interrupt();
+        RB0Interrupt();
+        RBPortChangeInterrupt();
     }
 
     public static void TMR0Interrupt(){
         if(get(11, 2) == 1 && get(11, 7) == 1 && get(11, 5) == 1){
             Stack.push(PC.get());
             PC.jump(4);
+            set0(11, 7);
         }
     }
 
@@ -240,6 +244,7 @@ public class Datenspeicher {
         if(get(11, 7) == 1 && get(11, 4) == 1 && get(11, 1) == 1){
             Stack.push(PC.get());
             PC.jump(4);
+            set0(11, 7);
         }
     }
 
@@ -247,12 +252,13 @@ public class Datenspeicher {
         if(get(11, 7) == 1 && get(11, 3) == 1 && get(11, 0) == 1){
             Stack.push(PC.get());
             PC.jump(4);
+            set0(11, 7);
         }
     }
 
-    public static void RBPortChange(int newRB0){
+    public static void RBPortChange(int newRB4to7){
         //falls einer der RBPorts geändert -> RBPort Flag == 1
-        if (RB0 != newRB0){
+        if (RB4to7 != newRB4to7){
             set1(11, 0);
         }
     }

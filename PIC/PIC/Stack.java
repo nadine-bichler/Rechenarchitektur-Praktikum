@@ -36,6 +36,6 @@ public class Stack {
      * returns the element on top of the stack if the stack is filled
      */
     public static int top(){
-        return elements[currentSize];
+        return elements[currentSize - 1];
     }
 }

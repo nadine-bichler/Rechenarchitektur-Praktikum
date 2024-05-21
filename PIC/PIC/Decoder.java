@@ -29,42 +29,49 @@ public class Decoder{
                         ADDLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b111001:
                         System.out.println("ANDLW");
                         ANDLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b111000:
                         System.out.println("IORLW");
                         IORLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b110000:
                         System.out.println("MOVLW");
                         MOVLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b110100:
                         System.out.println("RETLW");
                         RETLW(k);
                         Datenspeicher.Timer();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b111100:
                         System.out.println("SUBLW");
                         SUBLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b111010:
                         System.out.println("XORLW");
                         XORLW(k);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                 }
                 break;
@@ -72,7 +79,7 @@ public class Decoder{
             case 0b01:
 
             int bit = (bcode & 0x3FF) >> 7;
-            
+
 
                 switch(bcode >> 10){
                     case 0b0100:
@@ -82,6 +89,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b0101:
                         System.out.println("BSF");
@@ -90,6 +98,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b0110:
                         System.out.println("BTFSC");
@@ -98,6 +107,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b0111:
                         System.out.println("BTFSS");
@@ -106,6 +116,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                 }
             //Byte-oriented operations
@@ -121,6 +132,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000101:
                         System.out.println("ANDWF");
@@ -129,6 +141,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000001:      //CRLF oder CRLW
                         switch(bcode & 0xFF){
@@ -138,6 +151,7 @@ public class Decoder{
                                 CLRW(dBit, fAdr);
                                 PC.next();
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                             default:
                                 System.out.println("CRLF");
@@ -146,6 +160,7 @@ public class Decoder{
                                 PC.next();
                                 Datenspeicher.overwritingTimer(fAdr);
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                         }
                         break;
                     case 0b001001:
@@ -155,6 +170,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000011:
                         System.out.println("DECF");
@@ -163,14 +179,16 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b001011:
                         System.out.println("DECFSZ");
                         setIsIndirect (fAdr);
                         DECFSZ(dBit, fAdr);
                         PC.next();
-                        Datenspeicher.Timer();
                         Datenspeicher.overwritingTimer(fAdr);
+                        Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b001010:
                         System.out.println("INCF");
@@ -179,6 +197,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b001111:
                         System.out.println("INCFSZ");
@@ -187,6 +206,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000100:
                         System.out.println("IORWF");
@@ -195,6 +215,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b001000:
                         System.out.println("MOVF");
@@ -205,6 +226,7 @@ public class Decoder{
                             Datenspeicher.overwritingTimer(fAdr);
                         }
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000000:      //MOVWF, NOP, CRLWDT, RETFIE, RETURN, oder SLEEP
                         switch(bcode & 0xFF){
@@ -213,6 +235,7 @@ public class Decoder{
                                 NOP(dBit, fAdr);
                                 PC.next();
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                             case 0b01100100:
                                 System.out.println("CLRWDT");
@@ -220,6 +243,7 @@ public class Decoder{
                                 CLRWDT(dBit, fAdr);
                                 PC.next();
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                             case 0b00001001:
                                 System.out.println("RETFIE");
@@ -227,7 +251,7 @@ public class Decoder{
                                 RETFIE(dBit, fAdr);
                                 Datenspeicher.Timer();
                                 Datenspeicher.Timer();
-                                PC.next();
+                                Datenspeicher.Interrupts();
                                 break;
                             case 0b00001000:
                                 System.out.println("RETURN");
@@ -235,6 +259,7 @@ public class Decoder{
                                 RETURN(dBit, fAdr);
                                 Datenspeicher.Timer();
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                             case 0b01100011:
                                 System.out.println("SLEEP");
@@ -243,6 +268,7 @@ public class Decoder{
 //                                PC.next();                wird der Programmzähler erhöht, was geschieht bei dem Befehl
                                 PC.next();
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                             default:
                                 System.out.println("MOVWF");
@@ -251,6 +277,7 @@ public class Decoder{
                                 PC.next();
                                 Datenspeicher.overwritingTimer(fAdr);
                                 Datenspeicher.Timer();
+                                Datenspeicher.Interrupts();
                                 break;
                         }
                         break;
@@ -261,6 +288,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b001100:
                         System.out.println("RRF");
@@ -269,6 +297,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000010:
                         System.out.println("SUBWF");
@@ -283,6 +312,7 @@ public class Decoder{
                         SWAPF(dBit, fAdr);
                         PC.next();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b000110:
                         System.out.println("XORWF");
@@ -291,6 +321,7 @@ public class Decoder{
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                 }
             //Control operations
@@ -303,11 +334,13 @@ public class Decoder{
                         CALL(k);
                         Datenspeicher.Timer();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                     case 0b101:
                         GOTO(k);
                         Datenspeicher.Timer();
                         Datenspeicher.Timer();
+                        Datenspeicher.Interrupts();
                         break;
                 }
 
@@ -389,11 +422,14 @@ public class Decoder{
         
     }
 
-    public void BSF(int bit, int fAdr){   
+    public void BSF(int bit, int fAdr){
+        /*
         int save = Datenspeicher.PullDataFromRegister(fAdr);
         int mask = 0b1 << bit;
         save = save | mask;
         Datenspeicher.PushDataToRegister(fAdr, save);
+        */
+        Datenspeicher.set1(fAdr, bit);
     }
 
     public void BTFSC(int bit, int fAdr){
@@ -406,7 +442,7 @@ public class Decoder{
             PC.next();
         }
         else{                           //wenn das Bit an Stelle 1 ist soll es den nächsten Befehl ausführen
-            PC.next();
+            return;
         }
     }
 
@@ -547,8 +583,7 @@ public class Decoder{
 
         if(dBit == 0){
             W = save;
-       }
-       else{
+       } else{
             Datenspeicher.PushDataToRegister(fAdr, save);
             System.out.println(Datenspeicher.PullDataFromRegister(fAdr));
        }
