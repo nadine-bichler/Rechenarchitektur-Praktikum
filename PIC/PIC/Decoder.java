@@ -4,9 +4,10 @@ public class Decoder{
     //Working Register
     int W = 0;
     static boolean isIndirect = false;
-
-    static void setIsIndirect (int fAdr){
-        if(fAdr == 0){
+    static int fAdr = 0;
+    
+    static void setIsIndirect (int fAdrTest){
+        if(fAdrTest == 0){
             fAdr = Datenspeicher.PullDataFromRegister(4);
             isIndirect = true;
         }
@@ -14,7 +15,7 @@ public class Decoder{
 
     public void execute (int bcode){
 
-        int fAdr = bcode & 0x7F;
+        fAdr = bcode & 0x7F;
     
         switch (bcode >> 12){
             //Literal operations
