@@ -81,7 +81,8 @@ public class Datenspeicher {
         if(Decoder.isIndirect) {
             int content = bank0[4];
             int seventhBit = content >> 7;
-            
+            Decoder.isIndirect = false;												//hinzugefügt
+
             if(seventhBit == 0) {
                 return 10;
             }
@@ -91,7 +92,7 @@ public class Datenspeicher {
         }
         
         else {
-            if((bank0[3] & 0b100000) == 0) {
+            if((bank0[3] & 0b100000) == 0 || GUI_Practice.isPort == true) {			//geändert
                 return 0;
             }else {
                 return 1;

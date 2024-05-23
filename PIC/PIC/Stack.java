@@ -2,7 +2,7 @@ package PIC;
 public class Stack {
     // Attribute
     private static int[] elements = new int [8];
-    private static int currentSize;
+    public static int currentSize;						//geändert auf public
 
     // Fähigkeiten
     static {
@@ -29,6 +29,7 @@ public class Stack {
         if (currentSize == -1){
             currentSize = 7;
         }
+        GUI_Practice.updateTabelleStackRemove();
         return elements[currentSize];
     }
 
@@ -36,6 +37,6 @@ public class Stack {
      * returns the element on top of the stack if the stack is filled
      */
     public static int top(){
-        return elements[currentSize - 1];
+        return elements[currentSize];
     }
 }
