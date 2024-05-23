@@ -9,13 +9,11 @@ public class PC {
 
     public static int next(){
         pc++;
-        if (pc > 1024 ){
+        if (pc > 1023){
             pc = 0;
         }
         //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
-        //PCLATH
-        Datenspeicher.PushDataToRegister(10, (0));
         return pc;
     }
 
@@ -23,7 +21,9 @@ public class PC {
         pc = spot;
         //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
-        //PCLATH
-        Datenspeicher.PushDataToRegister(10, (0));
+    }
+
+    public static void overwritePc (int val){
+        pc = val;
     }
 }

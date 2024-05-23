@@ -273,4 +273,10 @@ public class Datenspeicher {
             }
         }
     }
+
+    public static void overwritingPCL(int fadr){
+        if(fadr == 2){
+            PC.overwritePc((PullDataFromRegister(10) << 8) | Datenspeicher.PullDataFromRegister(2));
+        }
+    }
 }

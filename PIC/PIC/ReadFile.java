@@ -17,7 +17,7 @@ public class ReadFile {
         int x = 0;
         try {
 
-            FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim8.LST");
+            FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim10.LST");
             //FileReader fileReader = new FileReader("C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim6.LST"); //C:/Users/thuyl/Desktop/TestProg_PicSim_20230413/TPicSim1.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
     
