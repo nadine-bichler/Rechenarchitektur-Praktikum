@@ -30,8 +30,8 @@ public class ReadFile {
         
         try {
 
-            //FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim7.LST");
-            FileReader fileReader = new FileReader(GUI_Practice.filepath); 
+            FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim7.LST");
+            //FileReader fileReader = new FileReader(GUI_Practice.filepath);
             //D:/Rechenarchitekturen/TestProg_PicSim_20230413/TPicSim6.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
     
