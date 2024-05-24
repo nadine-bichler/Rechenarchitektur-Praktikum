@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import java.awt.Font;
 
 public class GUI_Practice extends JFrame {
 
@@ -31,6 +31,7 @@ public class GUI_Practice extends JFrame {
 	public static boolean runProgramm = false;
 	public static boolean isPort = false;
 	public static String filepath = "";
+	public static JLabel timerLabel;
 
 	static String[] columnSPR = new String[] {
             "Adresse", "Bank1", "Bank2"
@@ -703,11 +704,13 @@ public class GUI_Practice extends JFrame {
 		});
 //-----------------------------------------------------------------------------------	
 		
-		JLabel timerLabel = new JLabel("Timer");
+		timerLabel = new JLabel("00:00:00");
+		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		timerLabel.setBounds(37, 61, 248, 49);
 		contentPane.add(timerLabel);
+		
 	}
 	
 //-----------------------------------------------------------------------------------	

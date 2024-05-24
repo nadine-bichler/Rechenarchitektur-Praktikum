@@ -30,8 +30,8 @@ public class ReadFile {
         
         try {
 
-            FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim7.LST");
-            //FileReader fileReader = new FileReader(GUI_Practice.filepath);
+            //FileReader fileReader = new FileReader("//C:/Users/nbich/Documents/2/Rechnerarchitektur/TestProg_PicSim/TPicSim7.LST");
+            FileReader fileReader = new FileReader(GUI_Practice.filepath); 
             //D:/Rechenarchitekturen/TestProg_PicSim_20230413/TPicSim6.LST
             BufferedReader bufferedReader = new BufferedReader(fileReader);
     
@@ -58,7 +58,12 @@ public class ReadFile {
         
         //Test ob richtig in Array gespeichert
 
-        //btfss Befehl, wieso fertig wenn timer = 0?        
+        //btfss Befehl, wieso fertig wenn timer = 0?  
+        
+        while(GUI_Practice.runProgramm == false) {
+    		System.out.println("");
+        }
+        Laufzeitzaehler.startTimer();
         
         while(true){
         	
