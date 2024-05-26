@@ -1,27 +1,26 @@
-package PIC; 
+package PIC;
 public class Datenspeicher {
 
-    private static int[] bank0 = new int[128];  
+    private static int[] bank0 = new int[128];
     private static int[] bank1 = new int[128];
-    
+
     static {
         for(int i = 0; i < bank0.length; i++) {     //Alle Register auf 0 setzen
             bank0[i] = 0;
             bank1[i] = 0;
         }
-            
+
         bank1[5] = 0x1F;    //Tris A
         bank1[6] = 0xFF;    //Tris B
-            
+
         bank0[3] = 0x18;    //Status-Register
         bank1[3] = 0x18;
 
         bank1[1] = 0xFF;    //Option-Register
     }
-
+    public static int PSA = get(1, 1, 3);
     public static int PS2 = bank1[1] & 0b111;
-    public static int Teilerfaktor = (int)Math.pow(2.0, (double)(PS2 + 1));
-    public static int prescaler = Teilerfaktor;
+    public static int prescaler = 0xFF;
     public static int RB0 = get(0,6,0);
     public static int RB4to7 = getRegister(0, 6) & 0b11110000;
     public static int RA4 = get(0, 5, 4);
@@ -37,7 +36,7 @@ public class Datenspeicher {
         return result;
     }
 
-    private static int get (int bank, int register, int k){
+    public static int get (int bank, int register, int k){
         int mask = 0b1 << k;
         int result;
         if(bank == 0){
@@ -76,7 +75,7 @@ public class Datenspeicher {
         }
 
     }
-    
+
     public static int whichBank() {
         if(Decoder.isIndirect) {
             int content = bank0[4];
@@ -90,18 +89,18 @@ public class Datenspeicher {
                 return 11;
             }
         }
-        
+
         else {
             if((bank0[3] & 0b100000) == 0 || GUI_Practice.isPort == true) {			//geändert
                 return 0;
             }else {
                 return 1;
             }
-        
-        
+
+
         }//zusatzbedingung für isIndirect Parameter
     }
-   
+
     public static void PushDataToRegister(int Register, int Ergebnis) {   //Port und Tris syncen ?
         if(whichBank() == 0 || whichBank() == 10) {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
@@ -111,7 +110,7 @@ public class Datenspeicher {
             else {
                 bank0[Register] = Ergebnis;
             }
-            
+
         }else {
             if((Register == 0) || (Register == 2) || (Register == 3) || (Register == 4) || (Register == 10) || (Register == 11) || ((Register >= 12) && (Register <= 79))) {
                 bank0[Register] = Ergebnis;
@@ -122,7 +121,7 @@ public class Datenspeicher {
             }
         }
     }
-    
+
     public static int PullDataFromRegister(int Register) {
         if(whichBank() == 0) {
             return bank0[Register];
@@ -140,7 +139,15 @@ public class Datenspeicher {
         }
     }
 
-    
+    public static void incrementRegister(int bank, int register){
+        if(bank == 0){
+            bank0[register]++;
+        }else{
+            bank1[register]++;
+        }
+    }
+
+
     public static void ZFlag(int output){
         if (output == 0){
             set1(3, 2);
@@ -172,25 +179,21 @@ public class Datenspeicher {
         System.out.println("C: " + get(3, 0) +" DC: " + get(3, 1) + " Z: " + get(3, 2));
     }
 
-    public static void PS2HasChanged(int newPS2){
-        if(PS2 != newPS2){
-            PS2 = newPS2;
-            Teilerfaktor = (int)Math.pow(2.0, (double)(PS2 + 1));
-            prescaler = Teilerfaktor;
+    public static void prescaler(boolean change) {
+        if(PSA != get(1, 1, 3) || PS2 != (bank1[1] & 0b111) || change) {
+            PSA = get(1, 1, 3);
+            PS2 = bank1[1] & 0b111;
+            if(get(1, 1, 3) == 0) {
+                prescaler = (int)Math.pow(2.0, (double)(PS2 + 1));
+            }else {
+                prescaler = (int)Math.pow(2.0, PS2);
+            }
         }
     }
 
     public static void overwritingTimer(int fadr){
         if(whichBank() == 0 & fadr == 1){
-            prescaler = Teilerfaktor;
-        }
-    }
-
-    public static void RA4Edge(int newRA4){
-        if(get(1, 1, 4) == 0 && RA4 == 0 && newRA4 == 1){
-            bank0[1]++;
-        } else if (get(1, 1, 4) == 1 && RA4 == 1 && newRA4 == 0) {
-            bank0[1]++;
+            prescaler(true);
         }
     }
 
@@ -198,7 +201,7 @@ public class Datenspeicher {
         int T0CS = (bank1[1] & 0b100000) >> 5;
         int PSA = (bank1[1] & 0b1000) >> 3;
 
-        PS2HasChanged(bank1[1] & 0b111);
+        prescaler(false);
 
         if (T0CS == 0){
             if(PSA == 0){
@@ -206,23 +209,14 @@ public class Datenspeicher {
             }else{
                 bank0[1]++;
             }
-        }else{
-            if(PSA == 0){
-                prescaler--;
-            }else{
-                RA4Edge(get(0, 5, 4));
-            }
         }
 
-        if (prescaler <= 0){
-            prescaler = Teilerfaktor;
-            bank0[1]++;
-        }
+        prescalerReachedMax();
 
         if(bank0[1] > 0xFF){
             set1(11, 2);
             bank0[1] = 0;
-            prescaler = Teilerfaktor;
+            prescaler(true);
         }
     }
 
@@ -257,27 +251,16 @@ public class Datenspeicher {
         }
     }
 
-    public static void RBPortChange(int newRB4to7){
-        //falls einer der RBPorts geändert -> RBPort Flag == 1
-        if (RB4to7 != newRB4to7){
-            set1(11, 0);
-        }
-    }
-
-    public static void RB0InterruptFlag(int newRB0){
-        //falls INTEDG = 1 -> interrupt bei steigender Flanke; falls INTEDG = 0 -> interrupt bei sinkender Flanke
-        if(RB0 != newRB0) {
-            if(get(1, 1, 6) == 1 && RB0 == 0 && newRB0 == 1){
-                set1(11, 1);
-            }else if(get(1, 1, 6) == 0 && RB0 == 1 && newRB0 == 0){
-                set1(11, 1);
-            }
-        }
-    }
-
     public static void overwritingPCL(int fadr){
         if(fadr == 2){
             PC.overwritePc((PullDataFromRegister(10) << 8) | Datenspeicher.PullDataFromRegister(2));
+        }
+    }
+
+    public static void prescalerReachedMax() {
+        if (prescaler <= 0){
+            prescaler(true);
+            bank0[1]++;
         }
     }
 }

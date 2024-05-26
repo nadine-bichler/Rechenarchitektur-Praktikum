@@ -1,4 +1,5 @@
 package PIC;
+
 public class Stack {
     // Attribute
     private static int[] elements = new int [8];
@@ -18,14 +19,14 @@ public class Stack {
             currentSize = 0;
         }
         elements[currentSize] = element;
-        currentSize += 1;
+        currentSize++;
     }
 
     /**
      * removes the element on top of the stack
      */
     public static int pop(){
-        currentSize -= 1;
+        currentSize--;
         if (currentSize == -1){
             currentSize = 7;
         }
@@ -37,6 +38,6 @@ public class Stack {
      * returns the element on top of the stack if the stack is filled
      */
     public static int top(){
-        return elements[currentSize];
+        return elements[currentSize - 1];
     }
 }
