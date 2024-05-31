@@ -10,7 +10,7 @@ public class Datenspeicher {
             bank1[i] = 0;
         }
 
-        bank1[5] = 0x1F;    //Tris A
+        bank1[5] = 0xFF;    //Tris A
         bank1[6] = 0xFF;    //Tris B
 
         bank0[3] = 0x18;    //Status-Register
@@ -21,9 +21,7 @@ public class Datenspeicher {
     public static int PSA = get(1, 1, 3);
     public static int PS2 = bank1[1] & 0b111;
     public static int prescaler = 0xFF;
-    public static int RB0 = get(0,6,0);
-    public static int RB4to7 = getRegister(0, 6) & 0b11110000;
-    public static int RA4 = get(0, 5, 4);
+    public static int[] dataLath = {15, 15};
 
     public static int get (int register,int k){
         int mask = 0b1 << k;
@@ -61,6 +59,7 @@ public class Datenspeicher {
         }
     }
 
+
     public static void set0(int register, int k){
         if(get(register, k) == 1){
             int mask = 0b1 << k;
@@ -73,8 +72,17 @@ public class Datenspeicher {
                 bank1[register] ^= mask;
             }
         }
-
     }
+
+
+    public static void setRegister(int bank, int register, int k){
+        if(bank == 0) {
+            bank0[register] = k;
+        }else {
+            bank1[register] = k;
+        }
+    }
+
 
     public static int whichBank() {
         if(Decoder.isIndirect) {
@@ -210,7 +218,6 @@ public class Datenspeicher {
                 bank0[1]++;
             }
         }
-
         prescalerReachedMax();
 
         if(bank0[1] > 0xFF){
@@ -263,4 +270,55 @@ public class Datenspeicher {
             bank0[1]++;
         }
     }
+
+    public static void setPort(int before, int fAdr){
+        int AorB = 0;
+        int newPortVal = PullDataFromRegister(fAdr);
+        int Tris = getRegister(1, fAdr);
+        if(whichBank() == 0 && (fAdr == 5 || fAdr == 6)){
+            if(fAdr == 6){
+                AorB = 1;
+            }
+            dataLath[AorB] = newPortVal;
+            newPortVal = (newPortVal & ~Tris) | (before & Tris);
+            PushDataToRegister(fAdr, newPortVal);
+        }
+    }
+
+    public static void dataToPort(int fAdr){
+        int AorB = 0;
+        int newPortVal = getRegister(0, fAdr);
+        int Tris = getRegister(1, fAdr);
+        if(whichBank() == 1 && (fAdr == 5 || fAdr == 6)){
+            if(fAdr == 6){
+                AorB = 1;
+            }
+            newPortVal = (dataLath[AorB] & ~Tris) | (newPortVal & Tris);
+        }
+        setRegister(0, fAdr, newPortVal);
+    }
+
+    public static void reset(){
+        PC.reset();
+        Stack.reset();
+        prescaler = 0xFF;
+        dataLath[0] = 15;
+        dataLath[1] = 15;
+        //bank0
+        setRegister(0, 2, 0);
+        setRegister(0, 3, getRegister(0, 3) & 0b1);
+        setRegister(0, 10, 0);
+        setRegister(0, 11, get(0, 11, 0));
+
+        //bank1
+        setRegister(1, 1, 0xFF);
+        setRegister(1, 2, 0);
+        setRegister(0, 3, getRegister(0, 3) & 0b1);
+        setRegister(1, 5, 0x1F);
+        setRegister(1, 6, 0xFF);
+        setRegister(1, 8, 0);
+        setRegister(1, 10, 0);
+        setRegister(1, 11, get(0, 11, 0));
+    }
 }
+

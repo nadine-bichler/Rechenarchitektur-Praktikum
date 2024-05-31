@@ -15,8 +15,8 @@ public class Decoder{
     }
 
     public void execute(int bcode) {
-
         fAdr = bcode & 0x7F;
+        int before = Datenspeicher.PullDataFromRegister(fAdr);
 
         switch (bcode >> 12) {
             //Literal operations
@@ -86,6 +86,8 @@ public class Decoder{
                         System.out.println("BCF");
                         setIsIndirect(fAdr);
                         BCF(bit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -96,6 +98,8 @@ public class Decoder{
                         System.out.println("BSF");
                         setIsIndirect(fAdr);
                         BSF(bit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -106,9 +110,7 @@ public class Decoder{
                         System.out.println("BTFSC");
                         setIsIndirect(fAdr);
                         BTFSC(bit, fAdr);
-                        Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
-                        Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
                         Datenspeicher.Interrupts();
                         break;
@@ -116,9 +118,7 @@ public class Decoder{
                         System.out.println("BTFSS");
                         setIsIndirect(fAdr);
                         BTFSS(bit, fAdr);
-                        Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
-                        Datenspeicher.overwritingTimer(fAdr);
                         Datenspeicher.Timer();
                         Datenspeicher.Interrupts();
                         break;
@@ -133,6 +133,8 @@ public class Decoder{
                         System.out.println("ADDWF");
                         setIsIndirect(fAdr);
                         ADDWF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -143,6 +145,8 @@ public class Decoder{
                         System.out.println("ANDWF");
                         setIsIndirect(fAdr);
                         ANDWF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -163,6 +167,8 @@ public class Decoder{
                                 System.out.println("CRLF");
                                 setIsIndirect(fAdr);
                                 CLRF(dBit, fAdr);
+                                Datenspeicher.setPort(before, fAdr);
+                                Datenspeicher.dataToPort(fAdr);
                                 Datenspeicher.overwritingPCL(fAdr);
                                 PC.next();
                                 Datenspeicher.overwritingTimer(fAdr);
@@ -174,6 +180,8 @@ public class Decoder{
                         System.out.println("COMF");
                         setIsIndirect(fAdr);
                         COMF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -184,6 +192,8 @@ public class Decoder{
                         System.out.println("DECF");
                         setIsIndirect(fAdr);
                         DECF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -194,6 +204,8 @@ public class Decoder{
                         System.out.println("DECFSZ");
                         setIsIndirect(fAdr);
                         DECFSZ(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -204,6 +216,8 @@ public class Decoder{
                         System.out.println("INCF");
                         setIsIndirect(fAdr);
                         INCF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -214,6 +228,8 @@ public class Decoder{
                         System.out.println("INCFSZ");
                         setIsIndirect(fAdr);
                         INCFSZ(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -224,6 +240,8 @@ public class Decoder{
                         System.out.println("IORWF");
                         setIsIndirect(fAdr);
                         IORWF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -235,6 +253,8 @@ public class Decoder{
                         setIsIndirect(fAdr);
                         MOVF(dBit, fAdr);
                         if (bcode == 0b10000001) {
+                            Datenspeicher.setPort(before, fAdr);
+                            Datenspeicher.dataToPort(fAdr);
                             Datenspeicher.overwritingPCL(fAdr);
                             Datenspeicher.overwritingTimer(fAdr);
                         }
@@ -287,6 +307,8 @@ public class Decoder{
                                 System.out.println("MOVWF");
                                 setIsIndirect (fAdr);
                                 MOVWF(dBit, fAdr);
+                                Datenspeicher.setPort(before, fAdr);
+                                Datenspeicher.dataToPort(fAdr);
                                 Datenspeicher.overwritingPCL(fAdr);
                                 PC.next();
                                 Datenspeicher.overwritingTimer(fAdr);
@@ -299,6 +321,8 @@ public class Decoder{
                         System.out.println("RLF");
                         setIsIndirect (fAdr);
                         RLF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -309,6 +333,8 @@ public class Decoder{
                         System.out.println("RRF");
                         setIsIndirect (fAdr);
                         RRF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -334,6 +360,8 @@ public class Decoder{
                         System.out.println("XORWF");
                         setIsIndirect (fAdr);
                         XORWF(dBit, fAdr);
+                        Datenspeicher.setPort(before, fAdr);
+                        Datenspeicher.dataToPort(fAdr);
                         Datenspeicher.overwritingPCL(fAdr);
                         PC.next();
                         Datenspeicher.overwritingTimer(fAdr);
@@ -431,21 +459,10 @@ public class Decoder{
 
     //bit-oriented operations
     public void BCF(int bit, int fAdr){
-        int save = Datenspeicher.PullDataFromRegister(fAdr);
-        int mask = ~(0b1 << bit);
-
-        save = save & mask;
-        Datenspeicher.PushDataToRegister(fAdr, save);
-
+        Datenspeicher.set0(fAdr, bit);
     }
 
     public void BSF(int bit, int fAdr){
-        /*
-        int save = Datenspeicher.PullDataFromRegister(fAdr);
-        int mask = 0b1 << bit;
-        save = save | mask;
-        Datenspeicher.PushDataToRegister(fAdr, save);
-        */
         Datenspeicher.set1(fAdr, bit);
     }
 

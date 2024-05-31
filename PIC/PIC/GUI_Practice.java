@@ -310,6 +310,14 @@ public class GUI_Practice extends JFrame {
 		resetButton.setBounds(627, 27, 89, 23);
 		contentPane.add(resetButton);
 
+		resetButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent resetEvent) {
+				Datenspeicher.reset();
+			}
+		});
+
 //-----------------------------------------------------------------------------------
 
 		final JButton loadButton = new JButton("Load");
@@ -837,23 +845,22 @@ public class GUI_Practice extends JFrame {
 		}
 	}
 
-	private void handleRA4Change(boolean isSelected) {
+	private static void handleRA4Change(boolean isSelected) {
 		boolean T0SE = (Datenspeicher.get(1, 1, 4)) != 0; // Check if T0SE (bit 4) is set
 		if (Datenspeicher.get(1, 1, 5) == 1) { // Check if T0CS (bit 5) is set
-			if(Datenspeicher.get(1, 1, 3) == 0) {
+			if(Datenspeicher.get(1, 1, 3) == 1) {
 				if ((T0SE && !isSelected) || (!T0SE && isSelected)) {
-					Datenspeicher.prescaler--;
-					Datenspeicher.prescalerReachedMax();
+					Datenspeicher.incrementRegister(0, 1);
 				}
 			}else {
 				if ((T0SE && !isSelected) || (!T0SE && isSelected)) {
-					Datenspeicher.incrementRegister(0, 1);
+					Datenspeicher.prescaler--;
 				}
 			}
 		}
 	}
 
-	private void handleRB0Change(boolean isSelected) {
+	private static void handleRB0Change(boolean isSelected) {
 		boolean INTEDG = (Datenspeicher.get(1, 1, 6)) != 0;
 		//falls INTEDG = 1 -> interrupt bei steigender Flanke; falls INTEDG = 0 -> interrupt bei sinkender Flanke
 		if ((INTEDG && isSelected) || (!INTEDG && !isSelected)) {
@@ -861,10 +868,22 @@ public class GUI_Practice extends JFrame {
 		}
 	}
 
-	private void handleRB4to7Change(int pin) {
+	private static void handleRB4to7Change(int pin) {
 		if(Datenspeicher.get(1, 6, pin) == 1) {
 			Datenspeicher.set1(11, 0);
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

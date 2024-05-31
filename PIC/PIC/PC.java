@@ -26,4 +26,8 @@ public class PC {
     public static void overwritePc (int val){
         pc = val;
     }
+
+    public static void reset(){
+        pc = 0;
+    }
 }

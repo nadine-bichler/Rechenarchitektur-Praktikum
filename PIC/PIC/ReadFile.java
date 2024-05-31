@@ -10,7 +10,7 @@ public class ReadFile {
     public static void main(String[] args){
 
         //Programmspeicher
-        int ROM [] = new int[1024];
+        int[] ROM= new int[1024];
 
         GUI_Practice g = new GUI_Practice();						//neu
         g.main();													//neu
@@ -75,6 +75,10 @@ public class ReadFile {
             GUI_Practice.updateRow(commandRow[PC.get()]);
             decoder.execute(ROM[PC.get()]);
             GUI_Practice.updateTabelle();
+            System.out.println("TrisA: " + Datenspeicher.getRegister(1, 5));
+            System.out.println("PortA: " + Datenspeicher.getRegister(0, 5));
+            System.out.println("TrisB: " + Datenspeicher.getRegister(1, 6));
+            System.out.println("PortB: " + Datenspeicher.getRegister(0, 6));
         }
     }
 }

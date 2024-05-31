@@ -40,4 +40,10 @@ public class Stack {
     public static int top(){
         return elements[currentSize - 1];
     }
+
+    public static void reset(){
+        for(int i = 0; i <= currentSize; i++){
+            pop();
+        }
+    }
 }
