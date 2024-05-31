@@ -306,19 +306,19 @@ public class Datenspeicher {
         dataLath[1] = 15;
         //bank0
         setRegister(0, 2, 0);
-        setRegister(0, 3, getRegister(0, 3) & 0b1);
+        setRegister(0, 3, getRegister(0, 3) & 0b11111);
         setRegister(0, 10, 0);
         setRegister(0, 11, get(0, 11, 0));
 
         //bank1
         setRegister(1, 1, 0xFF);
         setRegister(1, 2, 0);
-        setRegister(0, 3, getRegister(0, 3) & 0b1);
+        setRegister(1, 3, getRegister(1, 3) & 0b11111);
         setRegister(1, 5, 0x1F);
         setRegister(1, 6, 0xFF);
         setRegister(1, 8, 0);
         setRegister(1, 10, 0);
-        setRegister(1, 11, get(0, 11, 0));
+        setRegister(1, 11, get(1, 11, 0));
     }
 }
 
