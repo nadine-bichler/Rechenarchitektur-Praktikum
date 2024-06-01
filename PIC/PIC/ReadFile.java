@@ -62,16 +62,19 @@ public class ReadFile {
         while(GUI_Practice.runProgramm == false) {
             System.out.println("");
         }
-        Laufzeitzaehler.startTimer();
+        
 
         while(true){
 
-            while(GUI_Practice.runProgramm == false) {
-                System.out.println("");
+            GUI_Practice.updateRow(commandRow[PC.get()]);	//nach oben verschoben
+        	
+        	while(GUI_Practice.runProgramm == false || GUI_Practice.checkBreakpoint(commandRow[PC.get()], 0) == true) {		//muss noch verändert werden
+        		System.out.println("");
             }
-            GUI_Practice.updateRow(commandRow[PC.get()]);
+            
             decoder.execute(ROM[PC.get()]);
             GUI_Practice.updateTabelle();
+            
         }
     }
 }

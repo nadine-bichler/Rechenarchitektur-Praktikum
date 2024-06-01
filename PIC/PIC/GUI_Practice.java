@@ -3,6 +3,8 @@ package PIC;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -32,6 +34,7 @@ public class GUI_Practice extends JFrame {
 	public static boolean isPort = false;
 	public static String filepath = "";
 	public static JLabel timerLabel;
+	private static boolean removeBreakpoint = false;
 
 	static String[] columnSPR = new String[] {
 			"Adresse", "Bank1", "Bank2"
@@ -251,22 +254,54 @@ public class GUI_Practice extends JFrame {
 
 //-----------------------------------------------------------------------------------
 
-		JScrollPane spLST = new JScrollPane();
-		spLST.setBounds(329, 61, 1012, 728);
+JScrollPane spLST = new JScrollPane();
+spLST.setBounds(329, 61, 1012, 728);
 
-		final DefaultTableModel model = new DefaultTableModel();
-		tableLST.setModel(model);
+final DefaultTableModel model = new DefaultTableModel();
+tableLST.setModel(model);
 
-		model.addColumn("");
-		model.addColumn("");
-		model.addColumn("File content");
+model.addColumn("");
+model.addColumn("");
+model.addColumn("File content");
 
-		tableLST.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tableLST.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tableLST.getColumnModel().getColumn(2).setPreferredWidth(3000);
+tableLST.getColumnModel().getColumn(0).setPreferredWidth(30);
+tableLST.getColumnModel().getColumn(1).setPreferredWidth(100);
+tableLST.getColumnModel().getColumn(2).setPreferredWidth(3000);
 
-		spLST.setViewportView(tableLST);
-		contentPane.add(spLST);
+tableLST.addMouseListener(new MouseAdapter() {
+	@Override
+	public void mousePressed(MouseEvent event0) {
+		
+		
+		int row = tableLST.getSelectedRow();
+		int col = tableLST.getSelectedColumn();
+		
+		if(row >= 0 && col == 0) {
+			int number = (int) tableLST.getValueAt(row, col);
+			System.out.println("number: " + number);
+			
+			if(removeBreakpoint == false) {
+				tableLST.setValueAt(1, row, col);
+				System.out.println("set 1");
+				System.out.println(row + " " + col);
+			}
+			
+			else if(removeBreakpoint == true) {
+				tableLST.setValueAt(0, row, col);
+				System.out.println("set 0");
+				System.out.println();
+			}
+		}
+		
+		
+	}
+	
+});
+
+
+
+spLST.setViewportView(tableLST);
+contentPane.add(spLST);
 
 //-----------------------------------------------------------------------------------
 
@@ -303,6 +338,15 @@ public class GUI_Practice extends JFrame {
 		JButton stepButton = new JButton("Step");
 		stepButton.setBounds(527, 27, 89, 23);
 		contentPane.add(stepButton);
+
+		stepButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent event3) {
+				
+				
+			}
+		});
 
 //-----------------------------------------------------------------------------------
 
@@ -345,7 +389,7 @@ public class GUI_Practice extends JFrame {
 							String line = "";
 							while ((line = bufferedReader.readLine()) != null) {
 
-								model.addRow(new Object[] {"", "", line});
+								model.addRow(new Object[] {0, "", line});
 							}
 
 							bufferedReader.close();
@@ -716,12 +760,32 @@ public class GUI_Practice extends JFrame {
 		});
 //-----------------------------------------------------------------------------------
 
-		timerLabel = new JLabel("00:00:00");
+		timerLabel = new JLabel("00 ms");
 		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		timerLabel.setBounds(37, 61, 248, 49);
 		contentPane.add(timerLabel);
+
+//-----------------------------------------------------------------------------------
+
+		JCheckBox cbBreakpoint = new JCheckBox("remove Breakpoint");
+		cbBreakpoint.setBounds(722, 27, 97, 23);
+		contentPane.add(cbBreakpoint);
+
+		cbBreakpoint.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(cbBreakpoint.isSelected()) {
+					removeBreakpoint = true;
+				}
+				else {
+					removeBreakpoint = false;
+				}
+			}
+		});
+	
 
 	}
 
@@ -874,6 +938,18 @@ public class GUI_Practice extends JFrame {
 		if(Datenspeicher.get(1, 6, pin) == 1) {
 			Datenspeicher.set1(11, 0);
 		}
+	}
+
+	public static boolean checkBreakpoint(int row, int col) {
+		int number = (int) tableLST.getValueAt(row, col);
+		System.out.println(number);
+		if(number == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 }
 
