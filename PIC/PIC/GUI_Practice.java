@@ -315,6 +315,8 @@ public class GUI_Practice extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent resetEvent) {
 				Datenspeicher.reset();
+				updateRow(PC.get());
+				GUI_Practice.updateTabelle();
 			}
 		});
 
