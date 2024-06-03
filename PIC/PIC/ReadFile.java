@@ -62,16 +62,32 @@ public class ReadFile {
         while(GUI_Practice.runProgramm == false) {
             System.out.println("");
         }
-        Laufzeitzaehler.startTimer();
 
         while(true){
 
-            while(GUI_Practice.runProgramm == false) {
-                System.out.println("");
+            GUI_Practice.updateRow(commandRow[PC.get()]);	//nach oben verschoben
+        	
+        	while(GUI_Practice.runProgramm == false || GUI_Practice.checkBreakpoint(commandRow[PC.get()], 0) == true) {		//muss noch verändert werden
+        		System.out.println("");
             }
-            GUI_Practice.updateRow(commandRow[PC.get()]);
+            
             decoder.execute(ROM[PC.get()]);
             GUI_Practice.updateTabelle();
+            //System.out.println("Teilerfaktor: " + Datenspeicher.Teilerfaktor);
+            //System.out.println("Bank: " + Datenspeicher.whichBank());
+            //System.out.println("Register1 Bank0 (Timer): " + Datenspeicher.getRegister(0, 1));
+            //System.out.println("Register16 Bank0: " + Datenspeicher.getRegister(0, 0x10));
+            //System.out.println("W-Register: " + decoder.W);
+            //System.out.println("fsr-Register: " + Datenspeicher.PullDataFromRegister(4));
+            //System.out.println("wert1: " + Datenspeicher.PullDataFromRegister(12));
+            //System.out.println("wert2: " + Datenspeicher.PullDataFromRegister(13));
+            //System.out.println("ergebnis: " + Datenspeicher.PullDataFromRegister(14));
+            //System.out.println("F10: " + Datenspeicher.PullDataFromRegister(16));
+            //System.out.println("F11: " + Datenspeicher.PullDataFromRegister(17));
+            //System.out.println();
+            //System.out.println("Prescaler: " + Datenspeicher.prescaler);
+            //Datenspeicher.Flags();
+            //System.out.println();
         }
     }
 }
