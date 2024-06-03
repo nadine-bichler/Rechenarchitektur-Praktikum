@@ -22,6 +22,7 @@ public class Datenspeicher {
     public static int PS2 = bank1[1] & 0b111;
     public static int prescaler = 0xFF;
     public static int[] dataLath = {15, 15};
+    public static int Laufzeitzaehler = 0;
 
     public static int get (int register,int k){
         int mask = 0b1 << k;
@@ -225,6 +226,10 @@ public class Datenspeicher {
             bank0[1] = 0;
             prescaler(true);
         }
+
+        Laufzeitzaehler++;
+        String LaufzeitzaehlerStr = Laufzeitzaehler + " ms";
+        GUI_Practice.timerLabel.setText(LaufzeitzaehlerStr);
     }
 
     public static void Interrupts(){
