@@ -62,7 +62,7 @@ public class ReadFile {
         while(GUI_Practice.runProgramm == false) {
             System.out.println("");
         }
-        Laufzeitzaehler.startTimer();
+
 
         while(true){
 
