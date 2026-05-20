@@ -1,6 +1,6 @@
 # PIC 16F84 Simulator
 
-**Hinweis zum Projekt:** Dieses Projekt entstand im Sommer 2026 im Rahmen des Moduls *Rechnerarchitektur* am Anfang unseres Studiums. Aus heutiger Sicht würden wir die Software-Architektur definitiv anders aufbauen – insbesondere im Hinblick auf Clean-Code-Prinzipien, die Vermeidung von zu vielen statischen Methoden/Variablen und eine striktere Trennung von Backend und GUI (MVC-Pattern). Dennoch bleibt dieses Projekt für uns ein wichtiger Meilenstein: Es hat unser Verständnis für hardwarenahe Prozesse massiv geschärft und war ein großartiger Lernbeschleuniger für die agile Teamarbeit und Problemlösung.
+**Hinweis zum Projekt:** Dieses Projekt entstand im Sommer 2026 im Rahmen des Moduls Rechnerarchitektur am Anfang unseres Studiums. Aus heutiger Sicht würden wir die Software-Architektur definitiv anders aufbauen – insbesondere im Hinblick auf Clean-Code-Prinzipien, die Vermeidung von zu vielen statischen Methoden/Variablen und eine striktere Trennung von Backend und GUI (MVC-Pattern). Dennoch bleibt dieses Projekt für uns ein wichtiger Meilenstein: Es hat unser Verständnis für hardwarenahe Prozesse massiv geschärft und war ein großartiger Lernbeschleuniger für die agile Teamarbeit und Problemlösung.
 
 ---
 
