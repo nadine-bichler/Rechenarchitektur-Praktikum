@@ -41,6 +41,22 @@ From the subsequent project reflection, we drew important lessons for future sof
 
 ---
 
+## Build & Run
+
+This project is structured as a Maven project. To build and test it via the terminal:
+
+1. Navigate to the project directory (where the `pom.xml` is located):
+   ```bash
+   cd PIC
+2. Clean and compile the project:
+   ```bash
+   mvn clean compile
+3. Create the package (JAR):
+   ```bash
+   mvn clean package
+
+---
+
 ## Authors
 This project was created jointly in June 2024 by:
 - Thuy Linh Trinh
