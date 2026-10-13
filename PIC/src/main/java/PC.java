@@ -1,4 +1,4 @@
-package PIC;
+package src.main.java;
 
 public class PC {
     private static int pc = 0;
@@ -19,6 +19,7 @@ public class PC {
 
     public static void jump (int spot){
         pc = spot;
+        System.out.println("pc: " + pc);
         //PCL
         Datenspeicher.PushDataToRegister(2, (pc & 0xFF));
     }

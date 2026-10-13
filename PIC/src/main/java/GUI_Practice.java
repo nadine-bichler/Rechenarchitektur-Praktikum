@@ -1,4 +1,4 @@
-package PIC;
+package src.main.java;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -34,14 +34,19 @@ public class GUI_Practice extends JFrame {
 	public static boolean isPort = false;
 	public static String filepath = "";
 	public static JLabel timerLabel;
-	private static boolean removeBreakpoint = false;
+	static int[] commandRow = new int[1024];
+	public static int ROM [] = new int[1024];
+	Thread thread;
+
+
+	Decoder decoder = new Decoder();
 
 	static String[] columnSPR = new String[] {
-			"Adresse", "Bank1", "Bank2"
+			"Adresse", "Bank0", "Bank1"
 	};
 
 	static String[] columnsGPR = new String[] {
-			"Adresse", "Bank1", "Bank2"
+			"Adresse", "Bank0", "Bank1"
 	};
 
 	static String[] columnStack = new String[] {
@@ -98,6 +103,12 @@ public class GUI_Practice extends JFrame {
 			{"0x27", 0, 0},
 			{"0x28", 0, 0},
 			{"0x29", 0, 0},
+			{"0x2A", 0, 0},
+			{"0x2B", 0, 0},
+			{"0x2C", 0, 0},
+			{"0x2D", 0, 0},
+			{"0x2E", 0, 0},
+			{"0x2F", 0, 0},
 			{"0x30", 0, 0},
 			{"0x31", 0, 0},
 			{"0x32", 0, 0},
@@ -197,7 +208,7 @@ public class GUI_Practice extends JFrame {
 	static JTable tableSPR = new JTable(data, columnSPR);
 	static JTable table = new JTable(data2, columnsGPR);
 	static JTable tableStack = new JTable(data3, columnStack);
-	static JTable tableLST = new JTable();
+	static JTable tableLST;
 	static String fileInput = "";
 	static boolean isLoaded = false;
 
@@ -226,7 +237,7 @@ public class GUI_Practice extends JFrame {
 	 */
 	public GUI_Practice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1700, 900);
+		setBounds(100, 100, 1500, 900);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -235,127 +246,156 @@ public class GUI_Practice extends JFrame {
 
 //-----------------------------------------------------------------------------------
 		JScrollPane spSPR = new JScrollPane();
-		spSPR.setBounds(1376, 61, 265, 218);
+		spSPR.setBounds(1197, 61, 265, 218);
 		spSPR.setViewportView(tableSPR);
 		contentPane.add(spSPR);
 
 //-----------------------------------------------------------------------------------
 		JScrollPane spGPR = new JScrollPane();
-		spGPR.setBounds(1376, 312, 265, 477);
+		spGPR.setBounds(1197, 312, 265, 477);
 		spGPR.setViewportView(table);
 		contentPane.add(spGPR);
 
 //-----------------------------------------------------------------------------------
 
 		JScrollPane spStack = new JScrollPane();
-		spStack.setBounds(37, 636, 259, 153);
+		spStack.setBounds(26, 636, 222, 153);
 		spStack.setViewportView(tableStack);
 		contentPane.add(spStack);
 
 //-----------------------------------------------------------------------------------
 
-JScrollPane spLST = new JScrollPane();
-spLST.setBounds(329, 61, 1012, 728);
-
-final DefaultTableModel model = new DefaultTableModel();
-tableLST.setModel(model);
-
-model.addColumn("");
-model.addColumn("");
-model.addColumn("File content");
-
-tableLST.getColumnModel().getColumn(0).setPreferredWidth(30);
-tableLST.getColumnModel().getColumn(1).setPreferredWidth(100);
-tableLST.getColumnModel().getColumn(2).setPreferredWidth(3000);
-
-tableLST.addMouseListener(new MouseAdapter() {
-	@Override
-	public void mousePressed(MouseEvent event0) {
-		
-		
-		int row = tableLST.getSelectedRow();
-		int col = tableLST.getSelectedColumn();
-		
-		if(row >= 0 && col == 0) {
-			int number = (int) tableLST.getValueAt(row, col);
-			System.out.println("number: " + number);
-			
-			if(removeBreakpoint == false) {
-				tableLST.setValueAt(1, row, col);
-				System.out.println("set 1");
-				System.out.println(row + " " + col);
+		DefaultTableModel model5 = new DefaultTableModel(null, columnLST) {
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if (columnIndex == 0) {
+					return Boolean.class;
+				}
+				else if(columnIndex == 1 || columnIndex == 2) {
+					return String.class;
+				}
+				return super.getColumnClass(columnIndex);
 			}
-			
-			else if(removeBreakpoint == true) {
-				tableLST.setValueAt(0, row, col);
-				System.out.println("set 0");
-				System.out.println();
+		};
+
+		tableLST = new JTable(model5);
+		JScrollPane spLST = new JScrollPane();
+		spLST.setBounds(284, 61, 878, 728);
+
+		tableLST.setModel(model5);
+
+		tableLST.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tableLST.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tableLST.getColumnModel().getColumn(2).setPreferredWidth(3000);
+
+		tableLST.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent event0) {
+
+				int row = tableLST.getSelectedRow();
+				int col = tableLST.getSelectedColumn();
+				int counter = 0;
+
+				if(row >= 0 && col == 0) {
+					int number = (int) tableLST.getValueAt(row, col);
+					System.out.println("number: " + number);
+					counter++;
+					System.out.println(counter);
+
+					if(number == 0 && counter == 1) {
+						tableLST.setValueAt(1, row, col);
+						System.out.println("set 1");
+						System.out.println(row + " " + col);
+						System.out.println(counter);
+					}
+
+					else if(number == 1 && counter == 2) {
+						tableLST.setValueAt(0, row, col);
+						System.out.println("set 0");
+						System.out.println();
+						System.out.println(counter);
+						counter = 0;
+						System.out.println(counter);
+					}
+
+				}
+
+
 			}
-		}
-		
-		
-	}
-	
-});
+
+		});
 
 
 
-spLST.setViewportView(tableLST);
-contentPane.add(spLST);
+		spLST.setViewportView(tableLST);
+		contentPane.add(spLST);
+
+
+
 
 //-----------------------------------------------------------------------------------
 
 		JButton runButton = new JButton("Run");
-		runButton.setBounds(329, 27, 89, 23);
+		runButton.setBounds(284, 27, 89, 23);
 		contentPane.add(runButton);
 
 		runButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent event1) {
-				runProgramm = true;
-
+				if(fileLoaded) {
+					runProgramm = true;
+					thread = new Thread(()->{
+						while(!checkBreakpoint() && runProgramm) {
+							stepProgramm();
+						}
+					});
+					thread.start();
+				}
 			}
 		});
 
 //-----------------------------------------------------------------------------------
 
 		JButton stopButton = new JButton("Stop");
-		stopButton.setBounds(428, 27, 89, 23);
+		stopButton.setBounds(383, 27, 89, 23);
 		contentPane.add(stopButton);
 
 		stopButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent event2) {
-				runProgramm = false;
-
+				if(fileLoaded) {
+					runProgramm = false;
+				}
 			}
 		});
 
 //-----------------------------------------------------------------------------------
 
 		JButton stepButton = new JButton("Step");
-		stepButton.setBounds(527, 27, 89, 23);
+		stepButton.setBounds(482, 27, 89, 23);
 		contentPane.add(stepButton);
 
 		stepButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent event3) {
-				
-				
+				if(fileLoaded) {
+					runProgramm = true;
+					stepProgramm();
+					runProgramm = false;
+				}
 			}
 		});
 
 //-----------------------------------------------------------------------------------
 
 		JButton resetButton = new JButton("Reset");
-		resetButton.setBounds(627, 27, 89, 23);
+		resetButton.setBounds(581, 27, 89, 23);
 		contentPane.add(resetButton);
 
 		resetButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent resetEvent) {
 				Datenspeicher.reset();
@@ -367,7 +407,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JButton loadButton = new JButton("Load");
-		loadButton.setBounds(1251, 27, 89, 23);
+		loadButton.setBounds(1073, 27, 89, 23);
 		contentPane.add(loadButton);
 
 		loadButton.addActionListener(new ActionListener() {
@@ -381,6 +421,8 @@ contentPane.add(spLST);
 					if(i == JFileChooser.APPROVE_OPTION) {
 						File file = filechooser.getSelectedFile();
 						filepath = file.getPath();
+						int y = -1;													//neu
+						int x = 0;
 
 						try {
 							FileReader filereader = new FileReader(filepath);
@@ -388,8 +430,15 @@ contentPane.add(spLST);
 
 							String line = "";
 							while ((line = bufferedReader.readLine()) != null) {
+								y++;
+								model5.addRow(new Object[] {false, "", line});
+								if (line.startsWith(" ")){
+									continue;
+								}
+								System.out.println(line);
+								ROM [Integer.parseInt(line.substring(0,4), 16)] = Integer.parseInt(line.substring(5,9), 16);
+								commandRow[Integer.parseInt(line.substring(0,4), 16)] = y;									//neu
 
-								model.addRow(new Object[] {0, "", line});
 							}
 
 							bufferedReader.close();
@@ -408,7 +457,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox ra0CheckBox = new JCheckBox("RA0");
-		ra0CheckBox.setBounds(55, 175, 67, 23);
+		ra0CheckBox.setBounds(26, 175, 67, 23);
 		contentPane.add(ra0CheckBox);
 
 		ra0CheckBox.addActionListener(new ActionListener() {
@@ -435,7 +484,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox ra1CheckBox = new JCheckBox("RA1");
-		ra1CheckBox.setBounds(55, 224, 67, 23);
+		ra1CheckBox.setBounds(26, 224, 67, 23);
 		contentPane.add(ra1CheckBox);
 
 		ra1CheckBox.addActionListener(new ActionListener() {
@@ -462,7 +511,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox ra2CheckBox = new JCheckBox("RA2");
-		ra2CheckBox.setBounds(55, 271, 67, 23);
+		ra2CheckBox.setBounds(26, 271, 67, 23);
 		contentPane.add(ra2CheckBox);
 
 		ra2CheckBox.addActionListener(new ActionListener() {
@@ -489,7 +538,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox ra3CheckBox = new JCheckBox("RA3");
-		ra3CheckBox.setBounds(55, 325, 67, 23);
+		ra3CheckBox.setBounds(26, 325, 67, 23);
 		contentPane.add(ra3CheckBox);
 
 		ra3CheckBox.addActionListener(new ActionListener() {
@@ -516,7 +565,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox ra4CheckBox = new JCheckBox("RA4");
-		ra4CheckBox.setBounds(55, 378, 67, 23);
+		ra4CheckBox.setBounds(26, 379, 67, 23);
 		contentPane.add(ra4CheckBox);
 
 		ra4CheckBox.addActionListener(new ActionListener() {
@@ -544,7 +593,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb0CheckBox = new JCheckBox("RB0");
-		rb0CheckBox.setBounds(240, 175, 67, 23);
+		rb0CheckBox.setBounds(181, 175, 67, 23);
 		contentPane.add(rb0CheckBox);
 
 		rb0CheckBox.addActionListener(new ActionListener() {
@@ -572,7 +621,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb1CheckBox = new JCheckBox("RB1");
-		rb1CheckBox.setBounds(240, 224, 67, 23);
+		rb1CheckBox.setBounds(181, 224, 67, 23);
 		contentPane.add(rb1CheckBox);
 
 		rb1CheckBox.addActionListener(new ActionListener() {
@@ -599,7 +648,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb2CheckBox = new JCheckBox("RB2");
-		rb2CheckBox.setBounds(240, 271, 67, 23);
+		rb2CheckBox.setBounds(181, 271, 67, 23);
 		contentPane.add(rb2CheckBox);
 
 		rb2CheckBox.addActionListener(new ActionListener() {
@@ -626,7 +675,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb3CheckBox = new JCheckBox("RB3");
-		rb3CheckBox.setBounds(240, 325, 67, 23);
+		rb3CheckBox.setBounds(181, 325, 67, 23);
 		contentPane.add(rb3CheckBox);
 
 		rb3CheckBox.addActionListener(new ActionListener() {
@@ -653,7 +702,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb4CheckBox = new JCheckBox("RB4");
-		rb4CheckBox.setBounds(240, 378, 67, 23);
+		rb4CheckBox.setBounds(181, 379, 67, 23);
 		contentPane.add(rb4CheckBox);
 
 
@@ -680,7 +729,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb5CheckBox = new JCheckBox("RB5");
-		rb5CheckBox.setBounds(240, 428, 67, 23);
+		rb5CheckBox.setBounds(181, 433, 67, 23);
 		contentPane.add(rb5CheckBox);
 
 		rb5CheckBox.addActionListener(new ActionListener() {
@@ -707,7 +756,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb6CheckBox = new JCheckBox("RB6");
-		rb6CheckBox.setBounds(240, 481, 67, 23);
+		rb6CheckBox.setBounds(181, 487, 67, 23);
 		contentPane.add(rb6CheckBox);
 
 		rb6CheckBox.addActionListener(new ActionListener() {
@@ -734,7 +783,7 @@ contentPane.add(spLST);
 //-----------------------------------------------------------------------------------
 
 		final JCheckBox rb7CheckBox = new JCheckBox("RB7");
-		rb7CheckBox.setBounds(240, 536, 67, 23);
+		rb7CheckBox.setBounds(181, 541, 67, 23);
 		contentPane.add(rb7CheckBox);
 
 
@@ -760,33 +809,12 @@ contentPane.add(spLST);
 		});
 //-----------------------------------------------------------------------------------
 
-		timerLabel = new JLabel("00 ms");
-		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		timerLabel = new JLabel("00 µs");
+		timerLabel.setFont(new Font("Courier", Font.PLAIN, 20));
 		timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		timerLabel.setBounds(37, 61, 248, 49);
+		timerLabel.setBounds(37, 61, 211, 49);
 		contentPane.add(timerLabel);
-
-//-----------------------------------------------------------------------------------
-
-		JCheckBox cbBreakpoint = new JCheckBox("remove Breakpoint");
-		cbBreakpoint.setBounds(722, 27, 97, 23);
-		contentPane.add(cbBreakpoint);
-
-		cbBreakpoint.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(cbBreakpoint.isSelected()) {
-					removeBreakpoint = true;
-				}
-				else {
-					removeBreakpoint = false;
-				}
-			}
-		});
-	
-
 	}
 
 //-----------------------------------------------------------------------------------
@@ -817,9 +845,10 @@ contentPane.add(spLST);
 
 		}
 
+		int counter = 12;
 
 		for(int i = 0; i < data2.length; i++) {
-			int number = Datenspeicher.PullDataFromRegister(i);
+			int number = Datenspeicher.PullDataFromRegister(counter);
 			String hexStr = Integer.toHexString(number);
 
 			while(hexStr.length() < 2) {
@@ -830,6 +859,7 @@ contentPane.add(spLST);
 
 			table.setValueAt(hexStr, i, 1);
 			table.setValueAt(hexStr, i, 2);
+			counter++;
 		}
 
 		if(Stack.currentSize > 0) {
@@ -880,37 +910,6 @@ contentPane.add(spLST);
 		tableSPR.setValueAt(binaryStr, register, 1);
 	}
 
-
-	public static void setContentToZero() {
-		for(int i = 0; i < data.length; i++) {
-			int number = 0;
-			String binaryStr = Integer.toBinaryString(number);
-
-			while(binaryStr.length() < 8) {
-				binaryStr = "0" + binaryStr;
-			}
-
-			tableSPR.setValueAt(binaryStr, i, 1);
-			tableSPR.setValueAt(binaryStr, i, 2);
-
-		}
-
-
-		for(int i = 0; i < data2.length; i++) {
-			int number = 0;
-			String hexStr = Integer.toHexString(number);
-
-			while(hexStr.length() < 2) {
-				hexStr = "0" + hexStr;
-			}
-
-			hexStr = "0x" + hexStr;
-
-			table.setValueAt(hexStr, i, 1);
-			table.setValueAt(hexStr, i, 2);
-		}
-	}
-
 	private static void handleRA4Change(boolean isSelected) {
 		boolean T0SE = (Datenspeicher.get(1, 1, 4)) != 0; // Check if T0SE (bit 4) is set
 		if (Datenspeicher.get(1, 1, 5) == 1) { // Check if T0CS (bit 5) is set
@@ -940,28 +939,19 @@ contentPane.add(spLST);
 		}
 	}
 
-	public static boolean checkBreakpoint(int row, int col) {
-		int number = (int) tableLST.getValueAt(row, col);
-		System.out.println(number);
-		if(number == 1) {
-			return true;
-		}
-		else {
-			return false;
-		}
-		
+	public static boolean checkBreakpoint() {
+		// Gebe true zurück, wenn die CheckBox gesetzt ist, sonst false
+		boolean isBreakpointSet = (boolean) tableLST.getValueAt(commandRow[PC.get()], 0);
+		return isBreakpointSet;
 	}
+
+	public void stepProgramm() {
+		while(GUI_Practice.runProgramm == false) {
+			System.out.println("");
+		}
+		decoder.execute(ROM[PC.get()]);
+		GUI_Practice.updateRow(commandRow[PC.get()]);
+		GUI_Practice.updateTabelle();
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

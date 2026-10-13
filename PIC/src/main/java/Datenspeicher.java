@@ -1,4 +1,4 @@
-package PIC;
+package src.main.java;
 public class Datenspeicher {
 
     private static int[] bank0 = new int[128];
@@ -10,7 +10,7 @@ public class Datenspeicher {
             bank1[i] = 0;
         }
 
-        bank1[5] = 0xFF;    //Tris A
+        bank1[5] = 0x1F;    //Tris A
         bank1[6] = 0xFF;    //Tris B
 
         bank0[3] = 0x18;    //Status-Register
@@ -228,7 +228,7 @@ public class Datenspeicher {
         }
 
         Laufzeitzaehler++;
-        String LaufzeitzaehlerStr = Laufzeitzaehler + " ms";
+        String LaufzeitzaehlerStr = Laufzeitzaehler + " µs";
         GUI_Practice.timerLabel.setText(LaufzeitzaehlerStr);
     }
 
@@ -324,6 +324,9 @@ public class Datenspeicher {
         setRegister(1, 8, 0);
         setRegister(1, 10, 0);
         setRegister(1, 11, get(1, 11, 0));
+        Laufzeitzaehler = 0;
+        String LaufzeitzaehlerStr = Laufzeitzaehler + " µs";
+        GUI_Practice.timerLabel.setText(LaufzeitzaehlerStr);
+
     }
 }
-
