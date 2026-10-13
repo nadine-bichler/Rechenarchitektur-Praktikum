@@ -54,6 +54,9 @@ This project is structured as a Maven project. To build and test it via the term
 3. Create the package (JAR):
    ```bash
    mvn clean package
+4. Run:
+   ```bash
+   java -cp target/classes ReadFile
 
 ---
 
