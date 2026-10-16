@@ -1,3 +1,21 @@
+# Maven
 /target/
+
+# IntelliJ IDEA
 /.idea/
 *.iml
+
+# Eclipse / VSCode / NetBeans
+.classpath
+.project
+.settings/
+.vscode/
+nbproject/
+
+# Legacy IntelliJ artifact output
+/out/
+/META-INF/
+
+# OS
+.DS_Store
+Thumbs.db

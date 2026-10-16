@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="PIC:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/PIC_jar</output-path>
-    <root id="archive" name="PIC.jar">
-      <element id="module-output" name="PIC" />
-    </root>
-  </artifact>
-</component>
